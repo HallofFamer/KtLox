@@ -20,7 +20,9 @@ https://github.com/munificent/craftinginterpreters
 - Anonymous Functions(challenge from the book)
 - Objects and Classes
 - Methods and Property Getters
+- Inheritance
 - Metaclasses(challenge from the book)
+- Traits(challenge from the book)
 
 ## To Do List:
 TBD
