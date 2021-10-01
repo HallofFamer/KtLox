@@ -18,9 +18,9 @@ https://github.com/munificent/craftinginterpreters
 - Functions and Closures
 - Resolver and Semantic Analysis
 - Anonymous Functions(challenge from the book)
-- Objects and Classes
+- Classes and Objects
 - Methods and Property Getters
-- Inheritance
+- Inheritance and this/super keywords
 - Metaclasses(challenge from the book)
 - Traits(challenge from the book)
 
