@@ -38,12 +38,12 @@ https://github.com/munificent/craftinginterpreters
 ### KtLox v1.3.0
 - Syntactic Sugar for Array/Dictionary Literals.
 - Short closures/lambda expression.
-- Null-safe operator (?.). 
+- (maybe) Null-safe operator (?.). 
 
 ### KtLox v1.4.0
 - Immutable variable declaration with **val**.
 - Function/method parameters are immutable by default(unless var keyword is used).
-- Allow properties/instance variables to be defined inside the class statements, instead of initializers.
+- (maybe) Allow properties/instance variables to be defined inside the class statements, instead of initializers.
 
 ### KtLox v1.5.0
 - Refinement of metaclass system to match smalltalk's metaobject protocol. 
