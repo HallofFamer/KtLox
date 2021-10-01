@@ -11,7 +11,7 @@ https://github.com/munificent/craftinginterpreters
 ## Features
 - Lexer, Parser and Treewalk Interpreter
 - Unary and Binary Expression/Operators
-- If Statement
+- If and Else Statement
 - While and For Loop
 - Break Statement(challenge from the book)
 - Scope and Environment
