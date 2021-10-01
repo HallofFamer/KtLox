@@ -24,5 +24,52 @@ https://github.com/munificent/craftinginterpreters
 - Metaclasses(challenge from the book)
 - Traits(challenge from the book)
 
-## To Do List:
-TBD
+## Roadmap
+
+### KtLox v1.1.0(next version)
+- Improved object model - Everything is an object, including nil, true, false, etc. 
+- Framework for writing Native functions and classes. 
+
+### KtLox v1.2.0
+- Full Fledged Standard Library: Boolean, Number, String, Array, Dictionary, DateTime, etc.
+- Mechanism for efficiently loading standard library at interpreter startup. 
+
+### KtLox v1.3.0
+- Syntactic Sugar for Array/Dictionary Literals.
+- Short closures/lambda expression.
+- Null-safe operator. 
+
+### KtLox v1.4.0
+- Immutable variable declaration with **val**.
+- Function/method parameters are immutable by default(unless var keyword is used).
+- Allow properties/instance variables to be defined inside the class statements, instead of initializers.
+
+### KtLox v1.5.0
+- Refinement of metaclass system to match smalltalk's metaobject protocol. 
+- Improvement of trait system in KtLox. 
+- Add some Metaclasses and traits to the standard library.
+
+### KtLox v1.6.0
+- Introduction of Namespace for KtLox's module system. 
+- Allow importing namespaces and aliasing of imported classes/functions.
+- Redesign the existing standard library with namespaces(KtLox.Standard package).
+
+### KtLox v1.7.0
+- Exception handling: throw statement, try/catch/finally statement, etc. 
+- Add class Exception as well as a few more exception subclasses to the standard library.
+- (maybe) Pattern Matching
+
+### Ktlox v1.8.0
+- Operator Overloading: enable user defined classes to overload operators, these operators are treated as method calls.
+- Method interception when an undefined method call is invoked on an object/class, similar to Smalltalk's doesNotUnderstand: message. 
+- (maybe) Semicolon inference that allows semicolons to be omitted when its obvious that the statement is finished at the end of the line. 
+
+### KtLox v1.9.0
+- Introduction of async and await keywords, which allows C#/JS style of concurrency. 
+- Add class Promise(or Future) to the standard library, which represents an async task to be completed in future.
+- (maybe) Continuation and Context, similar to smalltalk style stack manipulation.
+
+### KtLox v2.0.0
+- Optional static typing support for instance variables and function/method parameters. 
+- (maybe) Type inference for immutable variables, as well as possible optimization for typed variables. 
+- (maybe) Slot as refied variables, similar to Pharo Smalltalk and Self's implementation. 
