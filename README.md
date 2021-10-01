@@ -15,7 +15,7 @@ https://github.com/munificent/craftinginterpreters
 - While and For Loop
 - Break Statement(challenge from the book)
 - Scope and Environment
-- Functions
+- Functions and Closures
 - Resolver and Semantic Analysis
 - Anonymous Functions(challenge from the book)
 - Objects and Classes
