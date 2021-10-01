@@ -12,8 +12,11 @@ KtLox is an implementation of the programming language Lox in Kotlin. Currently 
 - Break Statement
 - Scope and Environment
 - Functions
-- Resolver and
+- Resolver and Semantic Analysis
 - Anonymous Functions
 - Objects and Classes
 - Methods and Property Getters
 - Metaclasses
+
+## To Do List:
+TBD
