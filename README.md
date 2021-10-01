@@ -34,7 +34,7 @@ https://github.com/munificent/craftinginterpreters
 ### KtLox v1.2.0
 - Full Fledged Standard Library: Boolean, Number, String, Array, Dictionary, DateTime, etc.
 - Mechanism for efficiently loading standard library at interpreter startup. 
-- (maybe) Configutation(.ini file format) that allows users to customize classes/functions to be loaded.
+- (maybe) Split the Number class, which will distinguish between integers and floating numbers.
 
 ### KtLox v1.3.0
 - Syntactic Sugar for Array/Dictionary Literals.
