@@ -1,0 +1,14 @@
+class Math {
+    class init(){
+        this.e = 2.718281828;
+    }
+
+    class square(n) {
+        return n * n;
+    }
+}
+
+print Math.e;
+print Math.square(3);
+Math.pi = 3.141592653;
+print Math.pi;

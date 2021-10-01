@@ -1,0 +1,21 @@
+class Circle {
+    class init(){
+        this.pi = 3.141592653;
+    }
+
+    init(radius){
+        this.radius = radius;
+    }
+
+    area{
+        return Circle.pi * this.radius * this.radius;
+    }
+
+    circumference{
+        return 2 * Circle.pi * this.radius;
+    }
+}
+
+var circle = Circle(4);
+print circle.area;
+print circle.circumference;
