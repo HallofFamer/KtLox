@@ -28,3 +28,5 @@ class C with A, B {}
 var c = C();
 c.a();
 c.b();
+print B.parents();
+print c.instanceOf(C);

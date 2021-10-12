@@ -12,3 +12,16 @@ print Math.e;
 print Math.square(3);
 Math.pi = 3.141592653;
 print Math.pi;
+
+print Math.className;
+print Math.instanceOf(Class);
+print Math.isClass();
+
+print "Hello World".getClass();
+print "Hello World".getClass().getClass();
+print Object.className;
+print String.instanceOf(Class);
+print True.getSuperclass();
+print True.getSuperclass().getSuperclass();
+print True.getSuperclass().getSuperclass().getSuperclass();
+print nil.getClass();

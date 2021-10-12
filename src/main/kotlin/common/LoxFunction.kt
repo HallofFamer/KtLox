@@ -8,12 +8,12 @@ import com.mysidia.ktlox.interpreter.Return
 class LoxFunction(private val name: String?,
                   private val declaration: Expr.Function,
                   private val closure: Environment,
-                  private val isInitializer: Boolean) : LoxCallable{
+                  private val isInitializer: Boolean) : LoxObject(LoxFunctionClass), LoxCallable{
 
     override val arity = if(declaration.params != null) declaration.params.size else 0
-    val isGetter = declaration.params == null
+    override val isGetter = declaration.params == null
 
-    fun bind(instance: LoxInstance): LoxFunction{
+    override fun bind(instance: LoxObject): LoxCallable{
         val environment = Environment(closure)
         environment.define("this", instance)
         return LoxFunction(name, declaration, environment, isInitializer)

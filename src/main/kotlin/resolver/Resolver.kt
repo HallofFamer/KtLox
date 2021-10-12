@@ -62,7 +62,6 @@ class Resolver(private val interpreter: Interpreter) : Expr.Visitor<Unit>, Stmt.
     override fun visitSuperExpr(expr: Expr.Super) {
         when(currentClass){
             ClassType.NONE -> Lox.error(expr.keyword, "Cannot use 'super' outside of a class.")
-            ClassType.CLASS -> Lox.error(expr.keyword, "Cannot use 'super' without superclass.")
             ClassType.TRAIT -> Lox.error(expr.keyword, "Cannot use 'super' within a trait.")
         }
         resolveLocal(expr, expr.keyword, true)
@@ -103,11 +102,10 @@ class Resolver(private val interpreter: Interpreter) : Expr.Visitor<Unit>, Stmt.
         currentClass = ClassType.CLASS
         declare(stmt.name)
         define(stmt.name)
-        stmt.superclass?.let {
+        stmt.superclass.let {
             if(stmt.name.lexeme == it.name.lexeme){
                 Lox.error(it.name, "A class cannot inherit from itself.")
             }
-            currentClass = ClassType.SUBCLASS
             resolve(it)
             beginScope()
             scopes.peek()["super"] = Variable(implicitSuper, VariableState.READ)
@@ -132,7 +130,7 @@ class Resolver(private val interpreter: Interpreter) : Expr.Visitor<Unit>, Stmt.
             endScope()
         }
         endScope()
-        stmt.superclass?.let { endScope() }
+        endScope()
         currentClass = enclosingClass
     }
 

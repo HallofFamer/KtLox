@@ -34,7 +34,7 @@ object Ast {
         val grammarStmts = listOf(
             "Block      : List<Stmt> statements",
             "Break      : Token token",
-            "Class      : Token name, Expr.Variable? superclass, List<Expr.Variable> traits, List<Stmt.Function> methods, List<Stmt.Function> classMethods",
+            "Class      : Token name, Expr.Variable superclass, List<Expr.Variable> traits, List<Stmt.Function> methods, List<Stmt.Function> classMethods",
             "Function   : Token name, Expr.Function functionBody",
             "Expression : Expr expression",
             "If         : Expr condition, Stmt thenBranch, Stmt? elseBranch",

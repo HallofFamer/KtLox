@@ -1,0 +1,32 @@
+var a = "Hello World";
+print "value of a: ";
+print a;
+print "class of a: ";
+print a.className;
+print "length of a: ";
+print a.length;
+print "a is string?";
+print a.isString();
+print "a is empty?";
+print a.isEmpty();
+print "a is instance of String class?";
+print a.instanceOf(String);
+print "a is instance of Object class?";
+print a.instanceOf(Object);
+print "a is instance of Number class?";
+print a.instanceOf(Number);
+print "";
+
+var b = "";
+print "value of b: ";
+print b;
+print "class of b: ";
+print b.className;
+print "length of b: ";
+print b.length;
+print "b is string?";
+print b.isString();
+print "b is empty?";
+print b.isEmpty();
+
+//print String.instanceOf(Class);

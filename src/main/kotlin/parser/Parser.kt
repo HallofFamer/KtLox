@@ -15,6 +15,7 @@ class Parser(private val tokens: List<Token>) {
     private val next get() = tokens[current + 1]
     private val peek get() = tokens[current]
     private val previous get() = tokens[current - 1]
+    private val rootClass = Expr.Variable(Token(IDENTIFIER, "Object", null, 0))
 
     fun parse() : List<Stmt> {
         val statements = mutableListOf<Stmt>()
@@ -88,7 +89,7 @@ class Parser(private val tokens: List<Token>) {
 
     private fun classDeclaration(): Stmt.Class {
         val name = consume(IDENTIFIER, "Expect class name.")
-        val superclass = if(match(LESS)) Expr.Variable(consume(IDENTIFIER, "Expect superclass name.")) else null
+        val superclass = if(match(LESS)) Expr.Variable(consume(IDENTIFIER, "Expect superclass name.")) else rootClass
         val traits = withClause()
 
         consume(LEFT_BRACE, "Expect '{' before class body.")

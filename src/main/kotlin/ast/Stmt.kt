@@ -26,7 +26,7 @@ abstract class Stmt {
         override fun <R> accept(visitor: Visitor<R>) = visitor.visitBreakStmt(this)
     }
 
-    data class Class(val name: Token, val superclass: Expr.Variable?, val traits: List<Expr.Variable>, val methods: List<Stmt.Function>, val classMethods: List<Stmt.Function>) : Stmt(){
+    data class Class(val name: Token, val superclass: Expr.Variable, val traits: List<Expr.Variable>, val methods: List<Function>, val classMethods: List<Function>) : Stmt(){
         override fun <R> accept(visitor: Visitor<R>) = visitor.visitClassStmt(this)
     }
 
@@ -50,7 +50,7 @@ abstract class Stmt {
         override fun <R> accept(visitor: Visitor<R>) = visitor.visitReturnStmt(this)
     }
 
-    data class Trait(val name: Token, val traits: List<Expr.Variable>, val methods: List<Stmt.Function>) : Stmt(){
+    data class Trait(val name: Token, val traits: List<Expr.Variable>, val methods: List<Function>) : Stmt(){
         override fun <R> accept(visitor: Visitor<R>) = visitor.visitTraitStmt(this)
     }
 

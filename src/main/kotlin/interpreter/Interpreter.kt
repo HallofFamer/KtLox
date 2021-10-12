@@ -10,11 +10,26 @@ import com.mysidia.ktlox.lexer.TokenType.*
 class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
 
     private val globals = Environment()
-    private var environment = globals
     private val locals = mutableMapOf<Expr, Int>()
+
+    var environment = globals
+    val thisInstance: LoxObject get() = environment.getAt(0, "this") as LoxObject
+    val tokenFalse = Token(FALSE, "false", false, 0)
+    val tokenNil = Token(NIL, "nil", null, 0)
+    val tokenTrue = Token(TRUE, "true", true, 0)
 
     init {
         globals.define("clock", Clock)
+        globals.define("Object", LoxObjectClass)
+        globals.define("Nil", LoxNilClass)
+        globals.define("Boolean", LoxBooleanClass)
+        globals.define("False", LoxFalseClass)
+        globals.define("True", LoxTrueClass)
+        globals.define("Number", LoxNumberClass)
+        globals.define("String", LoxStringClass)
+        globals.define("Function", LoxFunctionClass)
+        globals.define("Class", LoxClassClass)
+        globals.define("Trait", LoxTraitClass)
     }
 
     fun executeBlock(statements: List<Stmt>, environment: Environment) {
@@ -40,7 +55,7 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
     fun resolve(expr: Expr, depth: Int) {
         locals[expr] = depth
     }
-
+    
     override fun visitAssignExpr(expr: Expr.Assign): Any? {
         val value = evaluate(expr.value)
         val distance = locals[expr]
@@ -73,14 +88,12 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
 
     override fun visitClassStmt(stmt: Stmt.Class) {
         environment.define(stmt.name.lexeme, null)
-        var superclass : Any? = null
-        stmt.superclass?.let {
-            superclass = evaluate(it)
-            if(superclass !is LoxClass) throw RuntimeError(it.name, "Superclass must be a class.")
-            environment = Environment(environment)
-            environment.define("super", superclass)
-        }
-        val classMethods = mutableMapOf<String, LoxFunction>()
+        val superclass = evaluate(stmt.superclass)
+        if(superclass !is LoxClass) throw RuntimeError(stmt.superclass.name, "Superclass must be a class.")
+        environment = Environment(environment)
+        environment.define("super", superclass)
+
+        val classMethods = mutableMapOf<String, LoxCallable>()
         var classInitializer : LoxFunction? = null
         stmt.classMethods.forEach {
             val method = if(it.name.lexeme == "init"){
@@ -90,15 +103,16 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
             classMethods[it.name.lexeme] = method
         }
 
-        val metaclass = LoxClass("${stmt.name.lexeme} class", null, classMethods, null)
-        val methods = applyTraits(stmt.traits)
+        val metaclass = LoxClass("${stmt.name.lexeme} class", LoxClassClass, classMethods, null)
+        val traits = evaluateTraits(stmt.traits)
+        val methods = applyTraits(stmt.traits, traits)
         stmt.methods.forEach {
             val method = LoxFunction(it.name.lexeme, it.functionBody, environment, it.name.lexeme == "init")
             methods[it.name.lexeme] = method
         }
         val klass = LoxClass(stmt.name.lexeme, superclass as LoxClass?, methods, metaclass)
         classInitializer?.bind(klass)?.call(this, listOf())
-        stmt.superclass?.let { environment = environment.enclosing!! }
+        environment = environment.enclosing!!
         environment.assign(stmt.name, klass)
     }
 
@@ -116,13 +130,18 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
     }
 
     override fun visitGetExpr(expr: Expr.Get): Any? {
-        val obj = evaluate(expr.obj)
-        if(obj is LoxInstance){
-            val result = obj.get(expr.name)
-            if(result is LoxFunction && result.isGetter) return result.call(this, null)
-            return result
+        val result = when(val obj = evaluate(expr.obj)){
+            is LoxObject -> obj.get(expr.name)
+            null -> LoxNil.get(expr.name)
+            true -> LoxTrue.get(expr.name)
+            false -> LoxFalse.get(expr.name)
+            is Double -> LoxNumber.reset(obj).get(expr.name)
+            is String -> LoxString.reset(obj).get(expr.name)
+            else -> throw RuntimeError(expr.name, "Accessing property on unidentified token.")
         }
-        throw RuntimeError(expr.name, "Only instances have properties.")
+
+        if(result is LoxCallable && result.isGetter) return result.call(this, null)
+        return result
     }
 
     override fun visitGroupingExpr(expr: Expr.Grouping) = evaluate(expr.expression)
@@ -151,18 +170,18 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
     }
 
     override fun visitSetExpr(expr: Expr.Set): Any? {
-        val obj = evaluate(expr.obj) as? LoxInstance ?: throw RuntimeError(expr.name, "Only instances have fields.")
+        val obj = evaluate(expr.obj) as? LoxObject ?: throw RuntimeError(expr.name, "Only instances have fields.")
         val value = evaluate(expr.value)
         obj.set(expr.name, value)
         return value
     }
 
-    override fun visitSuperExpr(expr: Expr.Super): LoxFunction {
+    override fun visitSuperExpr(expr: Expr.Super): LoxCallable {
         val distance = locals[expr]!!
         val superClass = environment.getAt(distance, "super") as LoxClass
-        val thisInstance = environment.getAt(distance - 1, "this") as LoxInstance
+        val thisInstance = environment.getAt(distance - 1, "this") as LoxObject
         val method = superClass.findMethod(expr.method.lexeme)
-            ?: throw RuntimeError(expr.method, "Undefined property '${expr.method.lexeme}'.")
+            ?: throw RuntimeError(expr.method, "Undefined method '${expr.method.lexeme}'.")
         return method.bind(thisInstance)
     }
 
@@ -172,11 +191,12 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
 
     override fun visitTraitStmt(stmt: Stmt.Trait) {
         environment.define(stmt.name.lexeme, null)
-        val methods = applyTraits(stmt.traits)
+        val parents = evaluateTraits(stmt.traits)
+        val methods = applyTraits(stmt.traits, parents)
         stmt.methods.forEach {
             methods[it.name.lexeme] = LoxFunction(it.name.lexeme, it.functionBody, environment, false)
         }
-        val trait = LoxTrait(stmt.name.lexeme, methods)
+        val trait = LoxTrait(stmt.name.lexeme, methods, parents)
         environment.assign(stmt.name, trait)
     }
 
@@ -208,13 +228,12 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
     }
 
 
-    private fun applyTraits(traits: List<Expr.Variable>) : MutableMap<String, LoxFunction>{
-        val methods = mutableMapOf<String, LoxFunction>()
-        traits.forEach {
-            val trait = evaluate(it)
-            if(trait !is LoxTrait) throw RuntimeError(it.name, "'${it.name.lexeme}' is not a trait.")
+    private fun applyTraits(traits: List<Expr.Variable>, traitObjects: List<LoxTrait>) : MutableMap<String, LoxCallable>{
+        val methods = mutableMapOf<String, LoxCallable>()
+        traits.forEachIndexed { index, variable ->
+            val trait = traitObjects[index]
             trait.methods.forEach { (name, method) ->
-                if(methods.containsKey(name)) throw RuntimeError(it.name, "Conflicting method $name found.")
+                if(methods.containsKey(name)) throw RuntimeError(variable.name, "Conflicting method $name found.")
                 methods[name] = method
             }
         }
@@ -248,6 +267,12 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
         if(left is String && right is String) return stringify(left) + stringify(right)
         throw RuntimeError(operator, "Operands must be two numbers or two strings.")
     }
+
+    private fun evaluateTraits(traits: List<Expr.Variable>) = traits.map {
+            val trait = evaluate(it)
+            if(trait !is LoxTrait) throw RuntimeError(it.name, "'${it.name.lexeme}' is not a trait.")
+            trait
+        }
 
     private fun execute(stmt: Stmt) = stmt.accept(this)
 

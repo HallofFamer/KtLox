@@ -3,9 +3,10 @@ package com.mysidia.ktlox.common
 import com.mysidia.ktlox.interpreter.RuntimeError
 import com.mysidia.ktlox.lexer.Token
 
-open class LoxInstance(private var klass: LoxClass?) {
+open class LoxObject(var klass: LoxClass?) {
 
     private val fields = mutableMapOf<String, Any?>()
+    val className by lazy { klass?.name ?: "Object" }
 
     fun get(name: Token) : Any? {
         if(fields.containsKey(name.lexeme)) return fields[name.lexeme]
@@ -18,5 +19,5 @@ open class LoxInstance(private var klass: LoxClass?) {
         fields[name.lexeme] = value
     }
 
-    override fun toString() = "${klass?.name} instance"
+    override fun toString() = "$className instance"
 }

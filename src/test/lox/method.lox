@@ -10,8 +10,20 @@ box.function("argument");
 
 class Bacon{
     eat(){
-        print "Crunch crunch crunch!";
+        return "Crunch crunch crunch!";
+    }
+
+    toString(){
+        return super.toString() + ", it is yummy!";
     }
 }
 
-Bacon().eat();
+var bacon = Bacon();
+print bacon.eat();
+print bacon.hashCode();
+print bacon.toString();
+print bacon.memberOf(Bacon);
+print bacon.memberOf(Box);
+print bacon.getClassName();
+print notMethod.toString();
+print clock.toString();
