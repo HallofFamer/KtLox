@@ -30,7 +30,6 @@ https://github.com/munificent/craftinginterpreters
 - Improved object model - Everything is an object, including nil, true, false, number, string, etc. 
 - Framework for writing Native functions and classes. 
 - root class Object which serves as superclass of every class. 
-- (maybe) Optimization of the parser/resolver that does constant folding, dead code elimination and more. 
 
 ### KtLox v1.2.0
 - Full Fledged Standard Library: Boolean, Number, String, Array, Dictionary, DateTime, etc.
