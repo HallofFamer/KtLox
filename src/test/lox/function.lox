@@ -1,5 +1,12 @@
 fun sayHi(first, last){
-    print "Hi, " + first + " " + last + "!";
+    println("Hi, " + first + " " + last + "!");
 }
 
 sayHi("Dear", "Reader");
+
+var x = readln();
+clock();
+print("Hello");
+println(x);
+error("invalid argument.");
+clock();

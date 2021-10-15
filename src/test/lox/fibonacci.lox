@@ -3,6 +3,15 @@ fun fib(n){
     return fib(n-2) + fib(n-1);
 }
 
-for(var i = 0; i < 20; i = i + 1){
-    print fib(i);
+for(var i = 0; i < 20;){
+    println(fib(i));
+    i = i + 1;
 }
+
+/*
+var i = 0;
+while(i < 20){
+    println(fib(i));
+    i = i + 1;
+}
+*/

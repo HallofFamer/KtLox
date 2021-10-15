@@ -23,22 +23,25 @@ https://github.com/munificent/craftinginterpreters
 - Inheritance and this/super keywords
 - Metaclasses(challenge from the book)
 - Traits(challenge from the book)
+- Framework for creating native functions/classes(since v1.1.0)
 
 ## Roadmap
 
 ### KtLox v1.1.0(current version)
 - Improved object model - Everything is an object, including nil, true, false, number, string, etc.
 - Framework for writing Native functions and classes.
-- root class Object which serves as superclass of every class.
+- Root class Object which serves as superclass of every class.
+- Remove print statement and replace it by print/println native functions.
 
 ### KtLox v1.2.0(next version)
 - Full Fledged Standard Library: Boolean, Number, String, Array, Dictionary, DateTime, etc.
 - Mechanism for efficiently loading standard library at interpreter startup.
-- (maybe) Split the Number class, which will distinguish between integers and floating numbers.
+- Split the Number class, which will distinguish between integers and floating numbers.
 
 ### KtLox v1.3.0
 - Syntactic Sugar for Array/Dictionary Literals.
-- Short closures/lambda expression.
+- Short closures/lambda expression with nonlocal returns.
+- Replace C style for loop by Kotlin style for-in loop for collection.
 - (maybe) Null-safe operator (?.).
 
 ### KtLox v1.4.0
@@ -50,6 +53,7 @@ https://github.com/munificent/craftinginterpreters
 - Refinement of metaclass system to match smalltalk's metaobject protocol.
 - Improvement of trait system in KtLox.
 - Add some Metaclasses and traits to the standard library.
+- (maybe) Add feature for anonymous class and trait.
 
 ### KtLox v1.6.0
 - Introduction of Namespace for KtLox's module system.
@@ -61,7 +65,7 @@ https://github.com/munificent/craftinginterpreters
 - Add class Exception as well as a few more exception subclasses to the standard library.
 - (maybe) Pattern Matching
 
-### Ktlox v1.8.0
+### KtLox v1.8.0
 - Operator Overloading: enable user defined classes to overload operators, these operators are treated as method calls.
 - Method interception when an undefined method call is invoked on an object/class, similar to Smalltalk's doesNotUnderstand: message.
 - (maybe) Semicolon inference that allows semicolons to be omitted when its obvious that the statement is finished at the end of the line.
@@ -74,4 +78,4 @@ https://github.com/munificent/craftinginterpreters
 ### KtLox v2.0.0
 - Optional static typing support for instance variables and function/method parameters.
 - (maybe) Type inference for immutable variables, as well as possible optimization for typed variables.
-- (maybe) Slot as refied variables, similar to Pharo Smalltalk and Self's implementation. 
+- (maybe) Slot as reified variables, similar to Pharo Smalltalk and Self's implementation. 

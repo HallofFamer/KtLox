@@ -3,9 +3,9 @@ package com.mysidia.ktlox.interpreter
 import com.mysidia.ktlox.Lox
 import com.mysidia.ktlox.ast.*
 import com.mysidia.ktlox.common.*
-import com.mysidia.ktlox.ext.Clock
 import com.mysidia.ktlox.lexer.Token
 import com.mysidia.ktlox.lexer.TokenType.*
+import com.mysidia.ktlox.std.func.*
 
 class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
 
@@ -20,6 +20,10 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
 
     init {
         globals.define("clock", Clock)
+        globals.define("error", Error)
+        globals.define("print", Print)
+        globals.define("println", PrintLn)
+        globals.define("readln", ReadLn)
         globals.define("Object", LoxObjectClass)
         globals.define("Nil", LoxNilClass)
         globals.define("Boolean", LoxBooleanClass)
@@ -103,14 +107,14 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
             classMethods[it.name.lexeme] = method
         }
 
-        val metaclass = LoxClass("${stmt.name.lexeme} class", LoxClassClass, classMethods, null)
+        val metaclass = LoxClass("${stmt.name.lexeme} class", LoxClassClass, classMethods, null, LoxClassClass)
         val traits = evaluateTraits(stmt.traits)
         val methods = applyTraits(stmt.traits, traits)
         stmt.methods.forEach {
             val method = LoxFunction(it.name.lexeme, it.functionBody, environment, it.name.lexeme == "init")
             methods[it.name.lexeme] = method
         }
-        val klass = LoxClass(stmt.name.lexeme, superclass as LoxClass?, methods, metaclass)
+        val klass = LoxClass(stmt.name.lexeme, superclass as LoxClass?, methods, traits.toMutableList(), metaclass)
         classInitializer?.bind(klass)?.call(this, listOf())
         environment = environment.enclosing!!
         environment.assign(stmt.name, klass)
@@ -159,11 +163,6 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
                else evaluate(expr.right)
     }
 
-    override fun visitPrintStmt(stmt: Stmt.Print) {
-        val value = evaluate(stmt.expression)
-        println(stringify(value))
-    }
-
     override fun visitReturnStmt(stmt: Stmt.Return) {
         val value = if(stmt.value != null) evaluate(stmt.value) else null
         throw Return(value)
@@ -191,12 +190,12 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
 
     override fun visitTraitStmt(stmt: Stmt.Trait) {
         environment.define(stmt.name.lexeme, null)
-        val parents = evaluateTraits(stmt.traits)
-        val methods = applyTraits(stmt.traits, parents)
+        val traits = evaluateTraits(stmt.traits)
+        val methods = applyTraits(stmt.traits, traits)
         stmt.methods.forEach {
             methods[it.name.lexeme] = LoxFunction(it.name.lexeme, it.functionBody, environment, false)
         }
-        val trait = LoxTrait(stmt.name.lexeme, methods, parents)
+        val trait = LoxTrait(stmt.name.lexeme, methods, traits)
         environment.assign(stmt.name, trait)
     }
 

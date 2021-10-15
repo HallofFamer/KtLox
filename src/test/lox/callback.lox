@@ -1,7 +1,7 @@
 class Thing{
     getCallback(){
         fun localFunction(){
-            print this;
+            println(this);
         }
         return localFunction;
     }

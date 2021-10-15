@@ -1,7 +1,7 @@
 class Box{ }
 
 fun notMethod(argument){
-    print "called function with " + argument;
+    println("called function with " + argument);
 }
 
 var box = Box();
@@ -19,11 +19,11 @@ class Bacon{
 }
 
 var bacon = Bacon();
-print bacon.eat();
-print bacon.hashCode();
-print bacon.toString();
-print bacon.memberOf(Bacon);
-print bacon.memberOf(Box);
-print bacon.getClassName();
-print notMethod.toString();
-print clock.toString();
+println(bacon.eat());
+println(bacon.hashCode());
+println(bacon.toString());
+println(bacon.memberOf(Bacon));
+println(bacon.memberOf(Box));
+println(bacon.getClassName());
+println(notMethod.toString());
+println(clock.toString());

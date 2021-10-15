@@ -5,7 +5,8 @@ import com.mysidia.ktlox.interpreter.Interpreter
 open class LoxClass(val name: String,
                     val superclass: LoxClass?,
                     val methods: MutableMap<String, LoxCallable>,
-                    metaclass: LoxClass?) : LoxObject(metaclass), LoxCallable{
+                    val traits: MutableList<LoxTrait>? = null,
+                    metaclass: LoxClass? = null) : LoxObject(metaclass), LoxCallable{
 
     private val initializer by lazy { findMethod("init") }
     override val arity get() = initializer?.arity ?: 0

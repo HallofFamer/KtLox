@@ -6,15 +6,18 @@ object LoxTraitClass : LoxNativeClass("Trait", LoxObjectClass){
 
     init{
         defineNativeMetaclass("Trait class")
-        defineNativeMethod("parents", 0, this::parentsDef)
+        defineNativeMethod("getParentTraits", 0, this::getParentTraitsDef)
+        defineNativeMethod("isTrait", 0, this::isTraitDef)
     }
 
-    private fun parentsDef(interpreter: Interpreter, arguments: List<Any?>?) : String{
+    private fun getParentTraitsDef(interpreter: Interpreter, arguments: List<Any?>?) : String{
         val self = interpreter.thisInstance as LoxTrait
         var parents = ""
-        self.parents?.forEach {
-            parents += "${it.name} "
+        self.traits?.forEach { trait ->
+            parents += "${trait.name} " + trait.printParents()
         }
         return parents
     }
+
+    private fun isTraitDef(interpreter: Interpreter, arguments: List<Any?>?) = true
 }

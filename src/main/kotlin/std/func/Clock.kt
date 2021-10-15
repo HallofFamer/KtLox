@@ -1,4 +1,4 @@
-package com.mysidia.ktlox.ext
+package com.mysidia.ktlox.std.func
 
 import com.mysidia.ktlox.common.LoxNativeFunction
 

@@ -1,10 +1,10 @@
 fun whichFn(fn){
-    print fn;
+    println(fn);
 }
 
 whichFn(fun (b) {
-    print b;
+    println(b);
 });
 
-fun named(a) { print a; }
+fun named(a) { println(a); }
 whichFn(named);

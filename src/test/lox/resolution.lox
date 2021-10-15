@@ -1,11 +1,11 @@
 var a = "global";
 {
   fun showA() {
-    print a;
+    println(a);
   }
 
   showA();
   var a = "block";
   showA();
-  print a;
+  println(a);
 }

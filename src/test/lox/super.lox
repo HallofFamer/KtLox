@@ -1,13 +1,13 @@
 class Doughnut{
     cook(){
-        print "Fry until golden brown.";
+        println("Fry until golden brown.");
     }
 }
 
 class BostonCream < Doughnut{
     cook(){
         super.cook();
-        print "Pipe full of custard and coat with chocolate.";
+        println("Pipe full of custard and coat with chocolate.");
     }
 }
 
@@ -15,13 +15,13 @@ BostonCream().cook();
 
 class A{
     method(){
-        print "Method A";
+        println("Method A");
     }
 }
 
 class B < A{
     method(){
-        print "Method B";
+        println("Method B");
     }
 
     test(){

@@ -1,11 +1,11 @@
 var x = Object();
-print x.toString();
+println(x.toString());
 
 var y = x.className;
 var z = x.getClassName;
-print y;
-print z;
+println(y);
+println(z);
 
 x.a = "dynamic property";
-print x.a;
+println(x.a);
 

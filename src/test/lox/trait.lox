@@ -1,18 +1,18 @@
 trait A {
     a() {
-        print "a";
+        println("a");
     }
 }
 
 trait B1 {
     b1() {
-        print "b1";
+        println("b1");
     }
 }
 
 trait B2 {
     b2() {
-        print "b2";
+        println("b2");
     }
 }
 
@@ -28,5 +28,9 @@ class C with A, B {}
 var c = C();
 c.a();
 c.b();
-print B.parents();
-print c.instanceOf(C);
+println(B.isTrait());
+println(B.getParentTraits());
+println(c.instanceOf(C));
+println(c.instanceOf(B));
+println(C.getTraits());
+println(C.getClass());

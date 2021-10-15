@@ -11,7 +11,6 @@ abstract class Stmt {
         fun visitFunctionStmt(stmt: Function) : R
         fun visitExpressionStmt(stmt: Expression) : R
         fun visitIfStmt(stmt: If) : R
-        fun visitPrintStmt(stmt: Print) : R
         fun visitReturnStmt(stmt: Return) : R
         fun visitTraitStmt(stmt: Trait) : R
         fun visitVarStmt(stmt: Var) : R
@@ -26,7 +25,7 @@ abstract class Stmt {
         override fun <R> accept(visitor: Visitor<R>) = visitor.visitBreakStmt(this)
     }
 
-    data class Class(val name: Token, val superclass: Expr.Variable, val traits: List<Expr.Variable>, val methods: List<Function>, val classMethods: List<Function>) : Stmt(){
+    data class Class(val name: Token, val superclass: Expr.Variable, val traits: List<Expr.Variable>, val methods: List<Stmt.Function>, val classMethods: List<Stmt.Function>) : Stmt(){
         override fun <R> accept(visitor: Visitor<R>) = visitor.visitClassStmt(this)
     }
 
@@ -42,15 +41,11 @@ abstract class Stmt {
         override fun <R> accept(visitor: Visitor<R>) = visitor.visitIfStmt(this)
     }
 
-    data class Print(val expression: Expr) : Stmt(){
-        override fun <R> accept(visitor: Visitor<R>) = visitor.visitPrintStmt(this)
-    }
-
     data class Return(val keyword: Token, val value: Expr?) : Stmt(){
         override fun <R> accept(visitor: Visitor<R>) = visitor.visitReturnStmt(this)
     }
 
-    data class Trait(val name: Token, val traits: List<Expr.Variable>, val methods: List<Function>) : Stmt(){
+    data class Trait(val name: Token, val traits: List<Expr.Variable>, val methods: List<Stmt.Function>) : Stmt(){
         override fun <R> accept(visitor: Visitor<R>) = visitor.visitTraitStmt(this)
     }
 

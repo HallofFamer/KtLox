@@ -121,7 +121,7 @@ class Parser(private val tokens: List<Token>) {
                 match(CLASS) -> classDeclaration()
                 check(FUN) && checkNext(IDENTIFIER) -> functionDeclaration()
                 match(TRAIT) -> traitDeclaration()
-                match(VAR) -> varDeclaration()
+                match(VAR) ->  varDeclaration()
                 else -> statement()
             }
         } catch(error: ParserError){
@@ -189,10 +189,10 @@ class Parser(private val tokens: List<Token>) {
 
         try{
             loopDepth++
-            var body = statement()
+            var body = statement() as Stmt.Block
             increment?.apply { body = Stmt.Block(listOf(body, Stmt.Expression(increment))) }
-            body = Stmt.While(condition, body)
-            initializer?.apply { body = Stmt.Block(listOf(initializer, body)) }
+            val loop = Stmt.While(condition, body)
+            initializer?.apply { body = Stmt.Block(listOf(initializer, loop)) }
             return body
         }
         finally{
@@ -280,12 +280,6 @@ class Parser(private val tokens: List<Token>) {
         }
     }
 
-    private fun printStatement(): Stmt.Print {
-        val value = expression()
-        consume(SEMICOLON, "Expect ';' after value.")
-        return Stmt.Print(value)
-    }
-
     private fun returnStatement(): Stmt.Return {
         val keyword = previous
         val value = if(!check(SEMICOLON)) expression() else null
@@ -298,7 +292,6 @@ class Parser(private val tokens: List<Token>) {
             match(BREAK) -> breakStatement()
             match(FOR) -> forStatement()
             match(IF) -> ifStatement()
-            match(PRINT) -> printStatement()
             match(RETURN) -> returnStatement()
             match(WHILE) -> whileStatement()
             match(LEFT_BRACE) -> Stmt.Block(block())
@@ -311,7 +304,7 @@ class Parser(private val tokens: List<Token>) {
         while(!isAtEnd){
             if(previous.type == SEMICOLON) return
             when(peek.type){
-                CLASS, FUN, VAR, FOR, IF, WHILE, PRINT, RETURN -> return
+                CLASS, FUN, VAR, FOR, IF, WHILE, RETURN -> return
                 else -> continue
             }
         }

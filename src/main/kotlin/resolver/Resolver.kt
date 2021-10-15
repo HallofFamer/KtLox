@@ -150,10 +150,6 @@ class Resolver(private val interpreter: Interpreter) : Expr.Visitor<Unit>, Stmt.
         stmt.elseBranch?.let { resolve(it) }
     }
 
-    override fun visitPrintStmt(stmt: Stmt.Print) {
-        resolve(stmt.expression)
-    }
-
     override fun visitReturnStmt(stmt: Stmt.Return) {
         if(currentFunction == FunctionType.NONE){
             Lox.error(stmt.keyword, "Cannot return from top-level code.")

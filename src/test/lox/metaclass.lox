@@ -8,20 +8,23 @@ class Math {
     }
 }
 
-print Math.e;
-print Math.square(3);
+println(Math.e);
+println(Math.square(3));
 Math.pi = 3.141592653;
-print Math.pi;
+println(Math.pi);
 
-print Math.className;
-print Math.instanceOf(Class);
-print Math.isClass();
+println(Math.className);
+println(Math.instanceOf(Class));
+println(Math.isClass());
 
-print "Hello World".getClass();
-print "Hello World".getClass().getClass();
-print Object.className;
-print String.instanceOf(Class);
-print True.getSuperclass();
-print True.getSuperclass().getSuperclass();
-print True.getSuperclass().getSuperclass().getSuperclass();
-print nil.getClass();
+println("Hello World".getClass());
+println("Hello World".getClass().getClass());
+println(Object.className);
+println(String.instanceOf(Class));
+println(True.getSuperclass());
+println(True.getSuperclass().getSuperclass());
+println(True.getSuperclass().getSuperclass().getSuperclass());
+println(nil.getClass());
+println(String.getClass());
+println(String.getClass().getClass());
+println(String.getClass().getClass().getClass());
