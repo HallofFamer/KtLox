@@ -1,6 +1,8 @@
 package com.mysidia.ktlox.common
 
-object LoxNumber : LoxObject(LoxNumberClass){
+import com.mysidia.ktlox.std.lang.NumberClass
+
+object LoxNumber : LoxObject(NumberClass){
 
     var value : Double = 0.0
 

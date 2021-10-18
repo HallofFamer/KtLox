@@ -2,12 +2,14 @@ package com.mysidia.ktlox.common
 
 import com.mysidia.ktlox.interpreter.Environment
 import com.mysidia.ktlox.interpreter.Interpreter
+import com.mysidia.ktlox.std.lang.FunctionClass
 
 open class LoxNativeMethod(val name: String,
                            override val arity: Int,
                            override val isGetter: Boolean,
                            private val closure: Environment?,
-                           private val body: (interpreter : Interpreter, arguments: List<Any?>?) -> Any?) : LoxObject(LoxFunctionClass), LoxCallable{
+                           private val body: (interpreter : Interpreter, arguments: List<Any?>?) -> Any?) :
+    LoxObject(FunctionClass), LoxCallable{
 
     override fun bind(instance: LoxObject): LoxNativeMethod {
         val environment = Environment(closure)

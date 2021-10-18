@@ -1,9 +1,10 @@
-package com.mysidia.ktlox.common
+package com.mysidia.ktlox.std.lang
 
+import com.mysidia.ktlox.common.LoxNativeClass
 import com.mysidia.ktlox.interpreter.Interpreter
 import com.mysidia.ktlox.interpreter.RuntimeError
 
-object LoxTrueClass : LoxNativeClass("True", LoxBooleanClass) {
+object TrueClass : LoxNativeClass("True", BooleanClass) {
 
     init{
         defineNativeMetaclass("True class")

@@ -1,8 +1,10 @@
-package com.mysidia.ktlox.common
+package com.mysidia.ktlox.std.lang
 
+import com.mysidia.ktlox.common.*
+import com.mysidia.ktlox.interpreter.ArgumentError
 import com.mysidia.ktlox.interpreter.Interpreter
 
-object LoxObjectClass : LoxNativeClass("Object", null){
+object ObjectClass : LoxNativeClass("Object", null){
 
     init{
         defineNativeMetaclass("Object class")
@@ -19,6 +21,7 @@ object LoxObjectClass : LoxNativeClass("Object", null){
         defineNativeMethod("isString", 0, this::isStringDef)
         defineNativeMethod("isTrait", 0, this::isTraitDef)
         defineNativeMethod("memberOf", 1, this::memberOfDef)
+        defineNativeMethod("respondsTo", 1, this::respondsToDef)
         defineNativeMethod("toString", 0, this::toStringDef)
     }
 
@@ -68,6 +71,16 @@ object LoxObjectClass : LoxNativeClass("Object", null){
         val self = interpreter.thisInstance
         val klass = arguments!![0] as? LoxClass ?: return false
         return self.className == klass.name
+    }
+
+    private fun respondsToDef(interpreter: Interpreter, arguments: List<Any?>?) : Boolean{
+        val self = interpreter.thisInstance
+        return when(val method = arguments!![0]){
+            is String -> self.klass?.findMethod(method) != null
+            is LoxFunction -> method.name?.let { self.klass?.findMethod(it) } != null
+            is LoxNativeMethod -> self.klass?.findMethod(method.name) != null
+            else -> throw ArgumentError("supplied argument must be a string or a function/method object")
+        }
     }
 
     private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) = "instance of class ${interpreter.thisInstance.className}"

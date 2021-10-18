@@ -1,3 +1,5 @@
 package com.mysidia.ktlox.common
 
-object LoxFalse : LoxObject(LoxFalseClass)
+import com.mysidia.ktlox.std.lang.FalseClass
+
+object LoxFalse : LoxObject(FalseClass)

@@ -1,8 +1,9 @@
-package com.mysidia.ktlox.common
+package com.mysidia.ktlox.std.lang
 
+import com.mysidia.ktlox.common.LoxNativeClass
 import com.mysidia.ktlox.interpreter.Interpreter
 
-object LoxBooleanClass : LoxNativeClass("Boolean", LoxObjectClass){
+object BooleanClass : LoxNativeClass("Boolean", ObjectClass){
 
     init{
         defineNativeMetaclass("Boolean class")

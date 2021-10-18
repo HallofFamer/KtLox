@@ -1,6 +1,8 @@
 package com.mysidia.ktlox.common
 
-object LoxString : LoxObject(LoxStringClass) {
+import com.mysidia.ktlox.std.lang.StringClass
+
+object LoxString : LoxObject(StringClass) {
 
     var value : String = ""
     var length: Int = 0

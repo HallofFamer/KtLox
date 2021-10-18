@@ -6,6 +6,7 @@ import com.mysidia.ktlox.common.*
 import com.mysidia.ktlox.lexer.Token
 import com.mysidia.ktlox.lexer.TokenType.*
 import com.mysidia.ktlox.std.func.*
+import com.mysidia.ktlox.std.lang.*
 
 class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
 
@@ -24,16 +25,19 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
         globals.define("print", Print)
         globals.define("println", PrintLn)
         globals.define("readln", ReadLn)
-        globals.define("Object", LoxObjectClass)
-        globals.define("Nil", LoxNilClass)
-        globals.define("Boolean", LoxBooleanClass)
-        globals.define("False", LoxFalseClass)
-        globals.define("True", LoxTrueClass)
-        globals.define("Number", LoxNumberClass)
-        globals.define("String", LoxStringClass)
-        globals.define("Function", LoxFunctionClass)
-        globals.define("Class", LoxClassClass)
-        globals.define("Trait", LoxTraitClass)
+        globals.define("Object", ObjectClass)
+        globals.define("Nil", NilClass)
+        globals.define("Boolean", BooleanClass)
+        globals.define("False", FalseClass)
+        globals.define("True", TrueClass)
+        globals.define("Number", NumberClass)
+        globals.define("String", StringClass)
+        globals.define("Function", FunctionClass)
+        globals.define("Class", ClassClass)
+        globals.define("Trait", TraitClass)
+        globals.define("Date", DateClass)
+        globals.define("DateTime", DateTimeClass)
+        globals.define("Duration", DurationClass)
     }
 
     fun executeBlock(statements: List<Stmt>, environment: Environment) {
@@ -83,11 +87,16 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
     override fun visitBreakStmt(stmt: Stmt.Break) = throw BreakException()
 
     override fun visitCallExpr(expr: Expr.Call): Any? {
-        val callee = evaluate(expr.callee)
-        val arguments = expr.arguments!!.map { evaluate(it) }
-        if(callee !is LoxCallable) throw RuntimeError(expr.paren, "can only call functions and classes.")
-        if(arguments.size != callee.arity) throw RuntimeError(expr.paren, "Expected ${callee.arity} arguments but got ${arguments.size} instead.")
-        return callee.call(this, arguments)
+        try {
+            val callee = evaluate(expr.callee)
+            val arguments = expr.arguments!!.map { evaluate(it) }
+            if(callee !is LoxCallable) throw RuntimeError(expr.paren, "can only call functions and classes.")
+            if(arguments.size != callee.arity) throw RuntimeError(expr.paren, "Expected ${callee.arity} arguments but got ${arguments.size} instead.")
+            return callee.call(this, arguments)
+        }
+        catch(ex: ArgumentError){
+            throw RuntimeError(expr.paren, ex.message!!)
+        }
     }
 
     override fun visitClassStmt(stmt: Stmt.Class) {
@@ -107,7 +116,7 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
             classMethods[it.name.lexeme] = method
         }
 
-        val metaclass = LoxClass("${stmt.name.lexeme} class", LoxClassClass, classMethods, null, LoxClassClass)
+        val metaclass = LoxClass("${stmt.name.lexeme} class", ClassClass, classMethods, null, ClassClass)
         val traits = evaluateTraits(stmt.traits)
         val methods = applyTraits(stmt.traits, traits)
         stmt.methods.forEach {
@@ -143,7 +152,6 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
             is String -> LoxString.reset(obj).get(expr.name)
             else -> throw RuntimeError(expr.name, "Accessing property on unidentified token.")
         }
-
         if(result is LoxCallable && result.isGetter) return result.call(this, null)
         return result
     }

@@ -1,3 +1,5 @@
 package com.mysidia.ktlox.common
 
-object LoxTrue : LoxObject(LoxTrueClass)
+import com.mysidia.ktlox.std.lang.TrueClass
+
+object LoxTrue : LoxObject(TrueClass)

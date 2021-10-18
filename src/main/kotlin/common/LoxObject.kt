@@ -15,8 +15,14 @@ open class LoxObject(var klass: LoxClass?) {
         throw RuntimeError(name, "Undefined property ${name.lexeme}.")
     }
 
+    fun getProperty(name: String) = fields[name]
+
     fun set(name: Token, value: Any?){
         fields[name.lexeme] = value
+    }
+
+    fun setProperty(name: String, value: Any?){
+        fields[name] = value
     }
 
     override fun toString() = "$className instance"

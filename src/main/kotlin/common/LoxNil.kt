@@ -1,3 +1,5 @@
 package com.mysidia.ktlox.common
 
-object LoxNil : LoxObject(LoxNilClass)
+import com.mysidia.ktlox.std.lang.NilClass
+
+object LoxNil : LoxObject(NilClass)

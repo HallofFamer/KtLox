@@ -4,11 +4,12 @@ import com.mysidia.ktlox.ast.Expr
 import com.mysidia.ktlox.interpreter.Environment
 import com.mysidia.ktlox.interpreter.Interpreter
 import com.mysidia.ktlox.interpreter.Return
+import com.mysidia.ktlox.std.lang.FunctionClass
 
-class LoxFunction(private val name: String?,
+class LoxFunction(val name: String?,
                   private val declaration: Expr.Function,
                   private val closure: Environment,
-                  private val isInitializer: Boolean) : LoxObject(LoxFunctionClass), LoxCallable{
+                  private val isInitializer: Boolean) : LoxObject(FunctionClass), LoxCallable{
 
     override val arity = if(declaration.params != null) declaration.params.size else 0
     override val isGetter = declaration.params == null

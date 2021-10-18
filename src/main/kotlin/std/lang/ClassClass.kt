@@ -1,8 +1,9 @@
-package com.mysidia.ktlox.common
+package com.mysidia.ktlox.std.lang
 
+import com.mysidia.ktlox.common.*
 import com.mysidia.ktlox.interpreter.Interpreter
 
-object LoxClassClass : LoxNativeClass("Class", LoxObjectClass, null) {
+object ClassClass : LoxNativeClass("Class", ObjectClass, null) {
 
     init{
         klass = this
