@@ -14,8 +14,8 @@ object NilClass : LoxNativeClass("Nil", ObjectClass){
         defineNativeMethod("toString", 0, this::toStringDef)
     }
 
-    private fun initDef(interpreter: Interpreter, arguments: List<Any?>?) : Any?{
-        throw RuntimeError(interpreter.tokenNil, "Cannot create instance from class Nil")
+    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?) : Any{
+        throw RuntimeError(interpreter.tokenNil, "Cannot create instance from class Nil.")
     }
 
     private fun isNilDef(interpreter: Interpreter, arguments: List<Any?>?) = true

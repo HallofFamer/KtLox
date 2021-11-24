@@ -26,7 +26,7 @@ term: (factor (PLUS | MINUS) factor)*;
 factor: (unary (STAR | SLASH) unary)*;
 unary: ((BANG | MINUS) unary) | call;
 call: primary (LPAREN arguments? RPAREN | DOT IDENTIFIER)*;
-primary: 'nil' | 'true' | 'false' | NUMBER | STRING | IDENTIFIER | (LPAREN expression RPAREN) | (FUN functionBody) | (SUPER DOT IDENTIFIER);
+primary: 'nil' | 'true' | 'false' | INT | FLOAT | STRING | IDENTIFIER | (LPAREN expression RPAREN) | (FUN functionBody) | (SUPER DOT IDENTIFIER);
 
 function: IDENTIFIER functionBody;
 functionBody: LPAREN parameters? RPAREN block;
@@ -53,6 +53,7 @@ DOT: '.';
 COMMA: ',';
 SEMICOLON: ';';
 EQ: '=';
+BANG: '!';
 LBRACE: '{';
 RBRACE: '}';
 LPAREN: '(';
@@ -68,7 +69,9 @@ MINUS: '-';
 STAR: '*';
 SLASH: '/';
 
-NUMBER: DIGIT+ (DOT DIGIT+)?;
+INT: DIGIT+;
+FLOAT: INT(DOT INT);
+NUMBER: INT | FLOAT;
 STRING: '\'" (.)*? "\'';
 IDENTIFIER: ALPHA (ALPHA | DIGIT)*;
 ALPHA: [a-zA-Z_]+;

@@ -25,6 +25,8 @@ object ObjectClass : LoxNativeClass("Object", null){
         defineNativeMethod("toString", 0, this::toStringDef)
     }
 
+    override fun new(klass: LoxClass) = LoxObject(klass)
+
     private fun classNameProp(interpreter: Interpreter, arguments: List<Any?>?) = interpreter.thisInstance.className
 
     private fun getClassDef(interpreter: Interpreter, arguments: List<Any?>?) = interpreter.thisInstance.klass
@@ -83,5 +85,5 @@ object ObjectClass : LoxNativeClass("Object", null){
         }
     }
 
-    private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) = "instance of class ${interpreter.thisInstance.className}"
+    private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) = thisInstance(interpreter).toString()
 }

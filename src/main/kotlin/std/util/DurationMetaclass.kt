@@ -1,10 +1,11 @@
-package com.mysidia.ktlox.std.lang
+package com.mysidia.ktlox.std.util
 
 import com.mysidia.ktlox.common.*
 import com.mysidia.ktlox.interpreter.Interpreter
+import com.mysidia.ktlox.std.lang.ClassClass
 import java.time.temporal.ChronoUnit
 
-object DurationMetaClass : LoxNativeClass("Duration class", ClassClass, null, ClassClass) {
+object DurationMetaclass : LoxNativeClass("Duration class", ClassClass, null, ClassClass) {
 
     init{
         defineNativeMethod("ofDays", 1, this::ofDaysDef)
@@ -17,9 +18,9 @@ object DurationMetaClass : LoxNativeClass("Duration class", ClassClass, null, Cl
         val days = self.jDate.until(other.jDate, ChronoUnit.DAYS)
         val duration = LoxObject(DurationClass)
         duration.setProperty("days", days)
-        duration.setProperty("hours", 0)
-        duration.setProperty("minutes", 0)
-        duration.setProperty("seconds", 0)
+        duration.setProperty("hours", 0L)
+        duration.setProperty("minutes", 0L)
+        duration.setProperty("seconds", 0L)
         return duration
     }
 
@@ -43,37 +44,37 @@ object DurationMetaClass : LoxNativeClass("Duration class", ClassClass, null, Cl
 
     private fun ofDaysDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxObject{
         val self = LoxObject(DurationClass)
-        self.setProperty("days", arguments!![0])
-        self.setProperty("hours", 0.0)
-        self.setProperty("minutes", 0.0)
-        self.setProperty("seconds", 0.0)
+        self.setProperty("days", arguments!![0] as Long)
+        self.setProperty("hours", 0L)
+        self.setProperty("minutes", 0L)
+        self.setProperty("seconds", 0L)
         return self
     }
 
     private fun ofHoursDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxObject{
         val self = LoxObject(DurationClass)
-        self.setProperty("days", 0.0)
-        self.setProperty("hours", arguments!![0])
-        self.setProperty("minutes", 0.0)
-        self.setProperty("seconds", 0.0)
+        self.setProperty("days", 0L)
+        self.setProperty("hours", arguments!![0] as Long)
+        self.setProperty("minutes", 0L)
+        self.setProperty("seconds", 0L)
         return self
     }
 
     private fun ofMinutesDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxObject{
         val self = LoxObject(DurationClass)
-        self.setProperty("days", 0.0)
-        self.setProperty("hours", 0.0)
-        self.setProperty("minutes", arguments!![0])
-        self.setProperty("seconds", 0.0)
+        self.setProperty("days", 0L)
+        self.setProperty("hours", 0L)
+        self.setProperty("minutes", arguments!![0] as Long)
+        self.setProperty("seconds", 0L)
         return self
     }
 
     private fun ofSecondsDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxObject{
         val self = LoxObject(DurationClass)
-        self.setProperty("days", 0.0)
-        self.setProperty("hours", 0.0)
-        self.setProperty("minutes", 0.0)
-        self.setProperty("seconds", arguments!![0])
+        self.setProperty("days", 0L)
+        self.setProperty("hours", 0L)
+        self.setProperty("minutes", 0L)
+        self.setProperty("seconds", arguments!![0] as Long)
         return self
     }
 }

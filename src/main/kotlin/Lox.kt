@@ -9,16 +9,20 @@ import java.io.InputStreamReader
 import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.*
 import kotlin.system.exitProcess
 
 object Lox{
 
-    private val interpreter = Interpreter()
+    private val configs = Properties()
+    private val interpreter = Interpreter(configs)
+    private val path by lazy { configs.getProperty("path") }
     private var hadError = false
     private var hadRuntimeError = false
 
-    private fun runFile(path: String){
-        val bytes = Files.readAllBytes(Paths.get(path))
+    fun runFile(path: String){
+        val filePath = if(path.startsWith(".") || this.path.isEmpty()) path else this.path + path
+        val bytes = Files.readAllBytes(Paths.get(filePath))
         run(String(bytes, Charset.defaultCharset()))
         if(hadError) exitProcess(65)
         if(hadRuntimeError) exitProcess(70)
@@ -67,9 +71,11 @@ object Lox{
 
     @JvmStatic
     fun main(args: Array<String>) {
-        when(args.size){
+        val argv = configs.getProperty("argv").split(",").toTypedArray()
+        val arguments = if(argv[0].isEmpty()) args else argv
+        when(arguments.size){
             0 -> runPrompt()
-            1 -> runFile(args[0])
+            1 -> runFile(arguments[0])
             else -> {
                 println("Usage: ktlox [script]")
                 exitProcess(64)

@@ -1,0 +1,21 @@
+var a = Array(5);
+a.set(0, 4);
+a.set(1, 2.5);
+a.set(2, true);
+a.set(4, "Hello World");
+println(a);
+
+var b = "How are you feeling?";
+var c = b.split(" ");
+println(b);
+println(c);
+println(c.length);
+println(b.remove(" feeling"));
+println(b.contains("How"));
+
+var d = Array(2);
+d.set(0, "How");
+d.set(1, "we");
+println(d);
+println(b.containsAll(d));
+println(b.containsAny(d));

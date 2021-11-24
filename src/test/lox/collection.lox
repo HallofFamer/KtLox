@@ -1,0 +1,58 @@
+var list = List(nil);
+list.add(true);
+list.add(3);
+list.add("Hello World");
+println(list.length);
+list.add(4.5);
+println(list.length);
+println(list.contains(2));
+println(list.contains(3));
+println(list.get(2));
+println(list.indexOf(4.5));
+println(list.toString());
+
+list.remove(true);
+println(list.toString());
+println(list.isEmpty());
+println("Looping through List: ");
+list.each(fun(element){
+    println("element: " + element.toString());
+});
+
+var nList = list.select(fun(element){
+    return element.instanceOf(Number);
+});
+println("Number Sublist: ");
+println(nList.toString());
+var num = list.count(fun(element){
+    return element.instanceOf(Number);
+});
+println(num);
+
+var n2List = nList.collect(fun(element){
+    return element * element;
+});
+println(n2List.toString());
+var num2 = list.detect(fun(element){
+    return element.instanceOf(Number);
+});
+println(num2);
+
+list.clear();
+println(list.toString());
+println(list.isEmpty());
+
+var set = Set(nil);
+set.add(true);
+set.add(2);
+set.add(6.8);
+set.add("Hello World");
+set.add(2);
+println(set.toString());
+
+var map = Map(nil);
+map.put("US", "United States");
+map.put("EU", "Europe");
+map.put("RU", "Russia");
+println(map.toString());
+println(map.containsKey("US"));

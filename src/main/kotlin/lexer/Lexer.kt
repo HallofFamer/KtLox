@@ -33,10 +33,11 @@ class Lexer(private val source: String) {
             '+' -> addToken(PLUS)
             ';' -> addToken(SEMICOLON)
             '*' -> addToken(STAR)
-            '!' -> addToken(if (match('=')) BANG_EQUAL else BANG)
-            '=' -> addToken(if (match('=')) EQUAL_EQUAL else EQUAL)
-            '<' -> addToken(if (match('=')) LESS_EQUAL else LESS)
-            '>' -> addToken(if (match('=')) GREATER_EQUAL else GREATER)
+            '%' -> addToken(MODULUS)
+            '!' -> addToken(if(match('=')) BANG_EQUAL else BANG)
+            '=' -> addToken(if(match('=')) EQUAL_EQUAL else EQUAL)
+            '<' -> addToken(if(match('=')) LESS_EQUAL else LESS)
+            '>' -> addToken(if(match('=')) GREATER_EQUAL else GREATER)
             '/' -> addTokenForSlash()
             ' ', '\r', '\t' -> Unit
             '\n' -> line++
@@ -65,7 +66,7 @@ class Lexer(private val source: String) {
 
     private fun addTokenForSlash() {
         when{
-            match('/') -> while(peek() != '\u0000' && !isAtEnd) advance()
+            match('/') -> while(peek() != '\n' && !isAtEnd) advance()
             match('*') -> docBlockComments()
             else -> addToken(SLASH)
         }
@@ -118,8 +119,9 @@ class Lexer(private val source: String) {
         if(peek() == '.' && isDigit(peekNext())){
             advance()
             while(isDigit(peek())) advance()
+            addToken(FLOAT, source.substring(start, current).toDouble())
         }
-        addToken(NUMBER, source.substring(start, current).toDouble())
+        else addToken(INT, source.substring(start, current).toLong())
     }
 
     private fun peekNext() = if(current + 1 >= source.length) '\u0000' else source[current + 1]

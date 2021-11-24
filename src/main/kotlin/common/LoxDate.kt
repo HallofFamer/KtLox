@@ -1,11 +1,11 @@
 package com.mysidia.ktlox.common
 
-import com.mysidia.ktlox.std.lang.DateClass
+import com.mysidia.ktlox.std.util.DateClass
 import java.time.LocalDate
 
-class LoxDate(val jDate: LocalDate) : LoxObject(DateClass){
+class LoxDate(klass: LoxClass = DateClass) : LoxObject(klass){
 
-    override fun toString(): String {
-        return "${jDate.year}-${jDate.monthValue}-${jDate.dayOfMonth}"
-    }
+    lateinit var jDate : LocalDate
+
+    override fun toString() = "${jDate.year}-${jDate.monthValue}-${jDate.dayOfMonth}"
 }

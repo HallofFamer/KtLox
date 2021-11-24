@@ -5,39 +5,30 @@ import com.mysidia.ktlox.ast.*
 import com.mysidia.ktlox.common.*
 import com.mysidia.ktlox.lexer.Token
 import com.mysidia.ktlox.lexer.TokenType.*
-import com.mysidia.ktlox.std.func.*
 import com.mysidia.ktlox.std.lang.*
+import java.io.FileInputStream
+import java.util.*
 
-class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
+class Interpreter(private val configs: Properties) : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
 
     private val globals = Environment()
     private val locals = mutableMapOf<Expr, Int>()
 
     var environment = globals
-    val thisInstance: LoxObject get() = environment.getAt(0, "this") as LoxObject
+    val thisInstance: LoxObject get() = environment.getAt(0, "this") as? LoxObject ?: LoxNil
     val tokenFalse = Token(FALSE, "false", false, 0)
     val tokenNil = Token(NIL, "nil", null, 0)
     val tokenTrue = Token(TRUE, "true", true, 0)
 
-    init {
-        globals.define("clock", Clock)
-        globals.define("error", Error)
-        globals.define("print", Print)
-        globals.define("println", PrintLn)
-        globals.define("readln", ReadLn)
-        globals.define("Object", ObjectClass)
-        globals.define("Nil", NilClass)
-        globals.define("Boolean", BooleanClass)
-        globals.define("False", FalseClass)
-        globals.define("True", TrueClass)
-        globals.define("Number", NumberClass)
-        globals.define("String", StringClass)
-        globals.define("Function", FunctionClass)
-        globals.define("Class", ClassClass)
-        globals.define("Trait", TraitClass)
-        globals.define("Date", DateClass)
-        globals.define("DateTime", DateTimeClass)
-        globals.define("Duration", DurationClass)
+    init{
+        configs.load(FileInputStream("./config.properties"))
+        val stdPackage = configs.getProperty("std.package")
+        val modules = configs.getProperty("std.modules")
+        modules.split(",").forEach {
+            val moduleName = "$stdPackage.$it.${it.capitalize()}Module"
+            val module = Class.forName(moduleName).kotlin.objectInstance as LoxModule
+            module.registerModule(globals)
+        }
     }
 
     fun executeBlock(statements: List<Stmt>, environment: Environment) {
@@ -77,8 +68,16 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
         return when (expr.operator.type) {
             BANG_EQUAL -> !isEqual(left, right)
             EQUAL_EQUAL -> isEqual(left, right)
+            GREATER -> evaluateGreater(expr.operator, left, right)
+            GREATER_EQUAL -> evaluateGreaterEqual(expr.operator, left, right)
+            LESS -> evaluateLess(expr.operator, left, right)
+            LESS_EQUAL -> evaluateLessEqual(expr.operator, left, right)
             PLUS -> evaluatePlus(expr.operator, left, right)
-            else -> evaluateBinaryWithNumbers(expr.operator, left, right)
+            MINUS -> evaluateMinus(expr.operator, left, right)
+            STAR -> evaluateStar(expr.operator, left, right)
+            SLASH -> evaluateSlash(expr.operator, left, right)
+            MODULUS -> evaluateModulus(expr.operator, left, right)
+            else -> throw RuntimeException("Unidentified binary expression identified!")
         }
     }
 
@@ -148,9 +147,10 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
             null -> LoxNil.get(expr.name)
             true -> LoxTrue.get(expr.name)
             false -> LoxFalse.get(expr.name)
-            is Double -> LoxNumber.reset(obj).get(expr.name)
+            is Long -> LoxInt.reset(obj).get(expr.name)
+            is Double -> LoxFloat.reset(obj).get(expr.name)
             is String -> LoxString.reset(obj).get(expr.name)
-            else -> throw RuntimeError(expr.name, "Accessing property on unidentified token.")
+            else -> throw RuntimeError(expr.name, "Accessing property on unidentified token: ")
         }
         if(result is LoxCallable && result.isGetter) return result.call(this, null)
         return result
@@ -249,30 +249,68 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
 
     private fun evaluate(expr: Expr) = expr.accept(this)
 
-    private fun evaluateBinaryWithNumbers(operator: Token, left: Any?, right: Any?): Any {
-        if(!(left is Double && right is Double)) throw RuntimeError(operator, "Operands must be numbers.")
-        return when (operator.type) {
-            GREATER -> left > right
-            GREATER_EQUAL -> left >= right
-            LESS -> left <= right
-            LESS_EQUAL -> left <= right
-            MINUS -> left - right
-            STAR -> left * right
-            SLASH -> {
-                if (right == 0.0) throw RuntimeError(operator, "Cannot divide a number by 0!")
-                else left / right
-            }
-            else -> throw RuntimeException("Unidentified binary expression identified!")
+    private fun evaluateGreater(operator: Token, left: Any?, right: Any?) : Boolean{
+        if(left is Long && right is Long) return left > right
+        if(left is Number && right is Number) return left.toDouble() > right.toDouble()
+        throw RuntimeError(operator, "Operands for greater operator must be two numbers.")
+    }
+
+    private fun evaluateGreaterEqual(operator: Token, left: Any?, right: Any?) : Boolean{
+        if(left is Long && right is Long) return left >= right
+        if(left is Number && right is Number) return left.toDouble() >= right.toDouble()
+        throw RuntimeError(operator, "Operands for greater_equal operator must be two numbers.")
+    }
+
+    private fun evaluateLess(operator: Token, left: Any?, right: Any?) : Boolean{
+        if(left is Long && right is Long) return left < right
+        if(left is Number && right is Number) return left.toDouble() < right.toDouble()
+        throw RuntimeError(operator, "Operands for greater operator must be two numbers.")
+    }
+
+    private fun evaluateLessEqual(operator: Token, left: Any?, right: Any?) : Boolean{
+        if(left is Long && right is Long) return left <= right
+        if(left is Number && right is Number) return left.toDouble() <= right.toDouble()
+        throw RuntimeError(operator, "Operands for less_equal operator must be two numbers.")
+    }
+
+    private fun evaluateMinus(operator: Token, left: Any?, right: Any?): Any {
+        if(left is Long && right is Long) return left - right
+        if(left is Number && right is Number) return left.toDouble() - right.toDouble()
+        throw RuntimeError(operator, "Operands for minus operator must be two numbers.")
+    }
+
+    private fun evaluateModulus(operator: Token, left: Any?, right: Any?): Any{
+        if(left is Long && right is Long) return left % right
+        if(left is Number && right is Number) return left.toDouble() % right.toDouble()
+        throw RuntimeError(operator, "Operands for modulus operator must be two numbers.")
+    }
+
+    private fun evaluateNegate(operator: Token, operand: Any?) : Number{
+        return when(operand){
+            is Long -> -operand
+            is Double -> -operand
+            else -> throw RuntimeError(operator, "Operand must be a number.")
         }
     }
 
-    private fun evaluateNegate(operator: Token, operand: Any?) =
-        if(operand is Double) -operand else throw RuntimeError(operator, "Operand must be a number.")
-
     private fun evaluatePlus(operator: Token, left: Any?, right: Any?): Any {
-        if(left is Double && right is Double) return left + right
+        if(left is Long && right is Long) return left + right
+        if(left is Number && right is Number) return left.toDouble() + right.toDouble()
         if(left is String && right is String) return stringify(left) + stringify(right)
-        throw RuntimeError(operator, "Operands must be two numbers or two strings.")
+        throw RuntimeError(operator, "Operands for plus operator must be two numbers or two strings.")
+    }
+
+    private fun evaluateSlash(operator: Token, left: Any?, right: Any?) : Any {
+        if(right == 0L || right == 0.0) throw RuntimeError(operator, "Cannot divide a number by 0!")
+        if(left is Long && right is Long) return left / right
+        if(left is Number && right is Number) return left.toDouble() / right.toDouble()
+        throw RuntimeError(operator, "Operands for divide operator must be two numbers.")
+    }
+
+    private fun evaluateStar(operator: Token, left: Any?, right: Any?) : Any {
+        if(left is Long && right is Long) return left * right
+        if(left is Number && right is Number) return left.toDouble() * right.toDouble()
+        throw RuntimeError(operator, "Operands for times operator must be two numbers.")
     }
 
     private fun evaluateTraits(traits: List<Expr.Variable>) = traits.map {

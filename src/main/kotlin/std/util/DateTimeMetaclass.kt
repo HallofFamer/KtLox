@@ -1,7 +1,8 @@
-package com.mysidia.ktlox.std.lang
+package com.mysidia.ktlox.std.util
 
 import com.mysidia.ktlox.common.*
 import com.mysidia.ktlox.interpreter.Interpreter
+import com.mysidia.ktlox.std.lang.ClassClass
 import java.time.LocalDateTime
 
 object DateTimeMetaclass : LoxNativeClass("DateTime class", ClassClass, null, ClassClass){
@@ -17,16 +18,17 @@ object DateTimeMetaclass : LoxNativeClass("DateTime class", ClassClass, null, Cl
     }
 
     fun createFromLocalDateTime(jDateTime : LocalDateTime, cDateTime: LoxDateTime? = null) : LoxDateTime{
-        val dateTime = cDateTime ?: LoxDateTime(jDateTime)
-        dateTime.setProperty("day", jDateTime.dayOfMonth)
-        dateTime.setProperty("month", jDateTime.monthValue)
-        dateTime.setProperty("year", jDateTime.year)
-        dateTime.setProperty("hour", jDateTime.hour)
-        dateTime.setProperty("minute", jDateTime.minute)
-        dateTime.setProperty("second", jDateTime.second)
-        dateTime.setProperty("dayOfWeek", jDateTime.dayOfWeek)
-        dateTime.setProperty("dayOfYear", jDateTime.dayOfYear)
-        dateTime.setProperty("nanosecond", jDateTime.nano)
+        val dateTime = cDateTime ?: LoxDateTime()
+        dateTime.jDateTime = jDateTime
+        dateTime.setProperty("day", jDateTime.dayOfMonth.toLong())
+        dateTime.setProperty("month", jDateTime.monthValue.toLong())
+        dateTime.setProperty("year", jDateTime.year.toLong())
+        dateTime.setProperty("hour", jDateTime.hour.toLong())
+        dateTime.setProperty("minute", jDateTime.minute.toLong())
+        dateTime.setProperty("second", jDateTime.second.toLong())
+        dateTime.setProperty("dayOfWeek", jDateTime.dayOfWeek.value.toLong())
+        dateTime.setProperty("dayOfYear", jDateTime.dayOfYear.toLong())
+        dateTime.setProperty("nanosecond", jDateTime.nano.toLong())
         return dateTime
     }
 

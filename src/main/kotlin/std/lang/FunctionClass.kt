@@ -10,5 +10,5 @@ object FunctionClass : LoxNativeClass("Function", ObjectClass) {
         defineNativeMethod("arity", 0, this::arityDef)
     }
 
-    private fun arityDef(interpreter: Interpreter, arguments: List<Any?>?) = (interpreter.thisInstance as LoxCallable).arity
+    private fun arityDef(interpreter: Interpreter, arguments: List<Any?>?) = (interpreter.thisInstance as LoxCallable).arity.toLong()
 }

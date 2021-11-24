@@ -5,7 +5,6 @@ Kotlin Treewalk Interpreter for Lox
 KtLox is an implementation of the programming language Lox in Kotlin. Currently it uses naive treewalk interpreter, and is not optimized for speed. The initial version of KtLox has only features already present in the original JLox/CLox, but subsequent versions will continue to add new features to make it a powerful language. This is an experiment on the design and implementation of language features.
 
 The original version of Lox programming language can be found at Bob Nystrom's repository:
-
 https://github.com/munificent/craftinginterpreters
 
 ## Features
@@ -35,18 +34,21 @@ https://github.com/munificent/craftinginterpreters
 
 ### KtLox v1.2.0(next version)
 - Full Fledged Standard Library: Boolean, Number, String, Array, Dictionary, DateTime, etc.
-- Mechanism for efficiently loading standard library at interpreter startup.
+- Move all native classes from common package to the std.lang package.
+- Allow customized runtime configurations for KtLox at startup with config.properties
 - Split the Number class, which will distinguish between integers and floating numbers.
 
 ### KtLox v1.3.0
-- Syntactic Sugar for Array/Dictionary Literals.
+- Array/Dictionary Literals and square bracket notation for array/dictionary access.
 - Short closures/lambda expression with nonlocal returns.
 - Replace C style for loop by Kotlin style for-in loop for collection.
+- Improved Collection framework/library for KtLox
 - (maybe) Null-safe operator (?.).
 
 ### KtLox v1.4.0
 - Immutable variable declaration with **val**.
 - Function/method parameters are immutable by default(unless var keyword is used).
+- Classes, functions and traits are immutable variables. 
 - (maybe) Allow properties/instance variables to be defined inside the class statements, instead of initializers.
 
 ### KtLox v1.5.0

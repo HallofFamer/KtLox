@@ -155,7 +155,7 @@ class Parser(private val tokens: List<Token>) {
 
     private fun factor(): Expr {
         var expr = unary()
-        while(match(SLASH, STAR)){
+        while(match(MODULUS, SLASH, STAR)){
             val operator = previous
             val right = unary()
             expr = Expr.Binary(expr, operator, right)
@@ -262,7 +262,7 @@ class Parser(private val tokens: List<Token>) {
             match(FALSE) -> Expr.Literal(false)
             match(TRUE) -> Expr.Literal(true)
             match(NIL) -> Expr.Literal(null)
-            match(NUMBER, STRING) -> Expr.Literal(previous.literal)
+            match(INT, FLOAT, STRING) -> Expr.Literal(previous.literal)
             match(FUN) -> functionBody("function")
             match(IDENTIFIER) -> Expr.Variable(previous)
             match(SUPER) -> {

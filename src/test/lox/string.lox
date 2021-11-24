@@ -23,7 +23,7 @@ println(b);
 println("class of b: ");
 println(b.className);
 println("length of b: ");
-println(b.length);
+println(b.length.toString());
 println("b is string?");
 println(b.isString());
 println("b is empty?");

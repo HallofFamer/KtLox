@@ -60,3 +60,33 @@ println("Time difference between the datetime and now is(secs): ");
 println(dateTime.diffTime(DateTime.now));
 println(dateTime.diff(DateTime.now).toString());
 println("");
+
+class EuroDate < Date{
+    init(year, month, day, timezone){
+        super.init(year, month, day);
+        this.timezone = timezone;
+    }
+
+    toString(){
+        return this.day.toString() + "/" + this.month.toString() + "/" + this.year.toString() + " " + this.timezone + " timezone";
+    }
+}
+
+var eDate = EuroDate(2021, 10, 21, "UTC");
+println(eDate.toString());
+println(eDate.format("M-d-Y"));
+
+class MilliDuration < Duration{
+    init(days, hours, minutes, seconds, milliseconds){
+        super.init(days, hours, minutes, seconds);
+        this.milliseconds = milliseconds;
+    }
+
+    toString(){
+        return super.toString() + ", " + this.milliseconds.toString() + " milliseconds";
+    }
+}
+
+var mDuration = MilliDuration(0, 0, 0, 5, 200);
+println(mDuration.seconds);
+println(mDuration.toString());

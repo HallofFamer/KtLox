@@ -1,6 +1,7 @@
 package com.mysidia.ktlox.std.lang
 
 import com.mysidia.ktlox.common.LoxNativeClass
+import com.mysidia.ktlox.common.LoxObject
 import com.mysidia.ktlox.interpreter.Interpreter
 import com.mysidia.ktlox.interpreter.RuntimeError
 
@@ -12,8 +13,8 @@ object FalseClass : LoxNativeClass("False", BooleanClass) {
         defineNativeMethod("toString", 0, this::toStringDef)
     }
 
-    private fun initDef(interpreter: Interpreter, arguments: List<Any?>?) : Any?{
-        throw RuntimeError(interpreter.tokenFalse, "Cannot create instance from class False")
+    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxObject{
+        throw RuntimeError(interpreter.tokenFalse, "Cannot create instance from class False.")
     }
 
     private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) = "false"

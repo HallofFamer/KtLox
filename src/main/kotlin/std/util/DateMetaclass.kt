@@ -1,7 +1,8 @@
-package com.mysidia.ktlox.std.lang
+package com.mysidia.ktlox.std.util
 
 import com.mysidia.ktlox.common.*
 import com.mysidia.ktlox.interpreter.Interpreter
+import com.mysidia.ktlox.std.lang.ClassClass
 import java.time.LocalDate
 
 object DateMetaclass : LoxNativeClass("Date class", ClassClass, null, ClassClass) {
@@ -17,12 +18,13 @@ object DateMetaclass : LoxNativeClass("Date class", ClassClass, null, ClassClass
     }
 
     fun createFromLocalDate(jDate : LocalDate, cDate: LoxDate? = null) : LoxDate{
-        val date = cDate ?: LoxDate(jDate)
-        date.setProperty("day", jDate.dayOfMonth)
-        date.setProperty("month", jDate.monthValue)
-        date.setProperty("year", jDate.year)
-        date.setProperty("dayOfWeek", jDate.dayOfWeek)
-        date.setProperty("dayOfYear", jDate.dayOfYear)
+        val date = cDate ?: LoxDate()
+        date.jDate = jDate
+        date.setProperty("day", jDate.dayOfMonth.toLong())
+        date.setProperty("month", jDate.monthValue.toLong())
+        date.setProperty("year", jDate.year.toLong())
+        date.setProperty("dayOfWeek", jDate.dayOfWeek.value.toLong())
+        date.setProperty("dayOfYear", jDate.dayOfYear.toLong())
         return date
     }
 

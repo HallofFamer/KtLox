@@ -2,11 +2,11 @@ package com.mysidia.ktlox.common
 
 import com.mysidia.ktlox.std.lang.NumberClass
 
-object LoxNumber : LoxObject(NumberClass){
+object LoxNumber : LoxObject(NumberClass), LoxNumeric<Number>{
 
-    var value : Double = 0.0
+    override var value : Number = 0.0
 
-    fun reset(value: Double) : LoxNumber{
+    override fun reset(value: Number) : LoxNumber{
         this.value = value
         return this
     }
