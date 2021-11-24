@@ -5,7 +5,7 @@ import com.mysidia.ktlox.common.LoxObject
 import com.mysidia.ktlox.interpreter.Interpreter
 import com.mysidia.ktlox.interpreter.RuntimeError
 
-object FalseClass : LoxNativeClass("False", BooleanClass) {
+object FalseClass : LoxNativeClass("False", BooleanClass){
 
     init{
         defineNativeMetaclass("False class")

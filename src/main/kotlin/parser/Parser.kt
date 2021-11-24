@@ -7,7 +7,7 @@ import com.mysidia.ktlox.lexer.Token
 import com.mysidia.ktlox.lexer.TokenType
 import com.mysidia.ktlox.lexer.TokenType.*
 
-class Parser(private val tokens: List<Token>) {
+class Parser(private val tokens: List<Token>){
 
     private var current = 0
     private val isAtEnd get() = peek.type == EOF

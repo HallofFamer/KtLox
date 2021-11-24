@@ -4,7 +4,7 @@ import com.mysidia.ktlox.std.lang.TraitClass
 
 class LoxTrait(val name: String,
                val methods: Map<String, LoxCallable>,
-               val traits: List<LoxTrait>? = null) : LoxObject(TraitClass) {
+               val traits: List<LoxTrait>? = null) : LoxObject(TraitClass){
 
     val parents : List<LoxTrait> by lazy {
         val parentTraits = mutableListOf<LoxTrait>()

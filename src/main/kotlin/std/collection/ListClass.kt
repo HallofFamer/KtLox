@@ -34,22 +34,24 @@ object ListClass : LoxNativeClass("List", CollectionClass){
 
     override fun new(klass: LoxClass) = LoxList(klass)
 
+    override fun thisInstance(interpreter: Interpreter) = interpreter.thisInstance as LoxList
+
     private fun addDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxList
+        val self = thisInstance(interpreter)
         val element = arguments!![0]
         self.elements.add(element)
     }
 
     private fun addAllDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxList
+        val self = thisInstance(interpreter)
         val collection = arguments!![0] as? LoxCollection<*> ?: throw ArgumentError("the collection(first argument) must be an instance of Collection.")
         self.elements.addAll(collection.elements)
     }
 
-    private fun clearDef(interpreter: Interpreter, arguments: List<Any?>?) = (interpreter.thisInstance as LoxList).elements.clear()
+    private fun clearDef(interpreter: Interpreter, arguments: List<Any?>?) = thisInstance(interpreter).elements.clear()
 
     private fun eachIndexDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxList
+        val self = thisInstance(interpreter)
         val block = arguments!![0] as? LoxFunction ?: throw ArgumentError("the block(first argument) must be a function or closure.")
         for(index in 0..self.length){
             block.call(interpreter, listOf(index))
@@ -57,39 +59,39 @@ object ListClass : LoxNativeClass("List", CollectionClass){
     }
 
     private fun getDef(interpreter: Interpreter, arguments: List<Any?>?) : Any?{
-        val self = interpreter.thisInstance as LoxList
+        val self = thisInstance(interpreter)
         val index = arguments!![0] as? Long ?: throw ArgumentError("the index(first argument) must be an integer.")
         if(index < 0 || index >= self.length) throw ArgumentError("the index(first argument) is out of bound.");
         return self.elements[index.toInt()]
     }
 
     private fun indexOfDef(interpreter: Interpreter, arguments: List<Any?>?) : Long{
-        val self = interpreter.thisInstance as LoxList
+        val self = thisInstance(interpreter)
         val element = arguments!![0]
         return self.elements.indexOf(element).toLong()
     }
 
     private fun lastIndexOfDef(interpreter: Interpreter, arguments: List<Any?>?) : Long{
-        val self = interpreter.thisInstance as LoxList
+        val self = thisInstance(interpreter)
         val element = arguments!![0]
         return self.elements.lastIndexOf(element).toLong()
     }
 
     private fun removeDef(interpreter: Interpreter, arguments: List<Any?>?) : Any?{
-        val self = interpreter.thisInstance as LoxList
+        val self = thisInstance(interpreter)
         val element = arguments!![0]
         self.elements.remove(element)
         return element
     }
 
     private fun removeAllDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxList
+        val self = thisInstance(interpreter)
         val collection = arguments!![0] as? LoxCollection<*> ?: throw ArgumentError("the collection(first argument) must be an instance of Collection.")
         self.elements.removeAll(collection.elements)
     }
 
     private fun setDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxList
+        val self = thisInstance(interpreter)
         val index = arguments!![0] as? Long ?: throw ArgumentError("the index(first argument) must be an integer.")
         val element = arguments[1]
         self.elements[index.toInt()] = element

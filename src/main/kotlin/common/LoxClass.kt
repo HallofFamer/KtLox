@@ -14,13 +14,13 @@ open class LoxClass(val name: String,
     override val isGetter = false
     open val isNative : Boolean = superclass?.isNative ?: false
 
-    override fun call(interpreter: Interpreter, arguments: List<Any?>?): Any {
+    override fun call(interpreter: Interpreter, arguments: List<Any?>?): Any{
         val instance = new(this)
         initializer?.bind(instance)?.call(interpreter, arguments)
         return instance
     }
 
-    fun findMethod(name: String) : LoxCallable? {
+    fun findMethod(name: String) : LoxCallable?{
         if(methods.containsKey(name)) return methods[name]
         return superclass?.findMethod(name)
     }

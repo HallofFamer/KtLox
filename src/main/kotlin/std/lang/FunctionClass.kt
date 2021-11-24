@@ -3,7 +3,7 @@ package com.mysidia.ktlox.std.lang
 import com.mysidia.ktlox.common.*
 import com.mysidia.ktlox.interpreter.Interpreter
 
-object FunctionClass : LoxNativeClass("Function", ObjectClass) {
+object FunctionClass : LoxNativeClass("Function", ObjectClass){
 
     init{
         defineNativeMetaclass("Function class")

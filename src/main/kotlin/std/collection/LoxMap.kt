@@ -15,7 +15,7 @@ class LoxMap(klass : LoxClass = MapClass) : LoxObject(klass){
 
     fun emptyCollection() = LoxMap(mutableMapOf(), klass!!)
 
-    override fun toString(): String {
+    override fun toString(): String{
         val text = StringBuilder()
         text.append("Map[")
         var index = 0

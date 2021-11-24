@@ -3,7 +3,7 @@ package com.mysidia.ktlox.common
 import com.mysidia.ktlox.interpreter.RuntimeError
 import com.mysidia.ktlox.lexer.Token
 
-open class LoxObject(var klass: LoxClass?) {
+open class LoxObject(var klass: LoxClass?){
 
     private val fields = mutableMapOf<String, Any?>()
     val className by lazy { klass?.name ?: "Object" }

@@ -29,29 +29,31 @@ object SetClass : LoxNativeClass("Set", CollectionClass) {
 
     override fun new(klass: LoxClass) = LoxSet(klass)
 
+    override fun thisInstance(interpreter: Interpreter) = interpreter.thisInstance as LoxSet
+
     private fun addDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxSet
+        val self = thisInstance(interpreter)
         val element = arguments!![0]
         self.elements.add(element)
     }
 
     private fun addAllDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxSet
+        val self = thisInstance(interpreter)
         val collection = arguments!![0] as? LoxCollection<*> ?: throw ArgumentError("the collection(first argument) must be an instance of Collection.")
         self.elements.addAll(collection.elements)
     }
 
-    private fun clearDef(interpreter: Interpreter, arguments: List<Any?>?) = (interpreter.thisInstance as LoxSet).elements.clear()
+    private fun clearDef(interpreter: Interpreter, arguments: List<Any?>?) = thisInstance(interpreter).elements.clear()
 
     private fun removeDef(interpreter: Interpreter, arguments: List<Any?>?) : Any?{
-        val self = interpreter.thisInstance as LoxSet
+        val self = thisInstance(interpreter)
         val element = arguments!![0]
         self.elements.remove(element)
         return element
     }
 
     private fun removeAllDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxSet
+        val self = thisInstance(interpreter)
         val collection = arguments!![0] as? LoxCollection<*> ?: throw ArgumentError("the collection(first argument) must be an instance of Collection.")
         self.elements.removeAll(collection.elements)
     }

@@ -2,7 +2,7 @@ package com.mysidia.ktlox.common
 
 import com.mysidia.ktlox.std.lang.ArrayClass
 
-class LoxArray(klass: LoxClass = ArrayClass) : LoxObject(klass) {
+class LoxArray(klass: LoxClass = ArrayClass) : LoxObject(klass){
 
     var length = 0
     lateinit var elements : Array<Any?>

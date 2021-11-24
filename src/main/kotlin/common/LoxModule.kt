@@ -2,6 +2,6 @@ package com.mysidia.ktlox.common
 
 import com.mysidia.ktlox.interpreter.Environment
 
-interface LoxModule {
+interface LoxModule{
     fun registerModule(env: Environment)
 }

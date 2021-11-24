@@ -21,8 +21,8 @@ class Lexer(private val source: String) {
         return tokens
     }
 
-    private fun scanToken() {
-        when (val c = advance()) {
+    private fun scanToken(){
+        when(val c = advance()){
             '(' -> addToken(LEFT_PAREN)
             ')' -> addToken(RIGHT_PAREN)
             '{' -> addToken(LEFT_BRACE)
@@ -48,11 +48,11 @@ class Lexer(private val source: String) {
 
     private fun advance() = source[current++]
 
-    private fun addToken(type: TokenType) {
+    private fun addToken(type: TokenType){
         addToken(type, null)
     }
 
-    private fun addToken(type: TokenType, literal: Any?) {
+    private fun addToken(type: TokenType, literal: Any?){
         val text = source.substring(start, current)
         tokens.add(Token(type, text, literal, line))
     }
@@ -64,7 +64,7 @@ class Lexer(private val source: String) {
         return true
     }
 
-    private fun addTokenForSlash() {
+    private fun addTokenForSlash(){
         when{
             match('/') -> while(peek() != '\n' && !isAtEnd) advance()
             match('*') -> docBlockComments()
@@ -89,7 +89,7 @@ class Lexer(private val source: String) {
         else advance()
     }
 
-    private fun string() {
+    private fun string(){
         while(peek() != '"' && !isAtEnd){
             if(peek() == '\n') line++
             advance()

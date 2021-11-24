@@ -22,23 +22,26 @@ https://github.com/munificent/craftinginterpreters
 - Inheritance and this/super keywords
 - Metaclasses(challenge from the book)
 - Traits(challenge from the book)
+- Object root class for every class in Lox(since v1.1.0)
 - Framework for creating native functions/classes(since v1.1.0)
+- Standard Library for KtLox(since v1.2.0)
+- Require/Include other Lox script/library files(since v1.2.0)
 
 ## Roadmap
 
-### KtLox v1.1.0(current version)
+### KtLox v1.1.0
 - Improved object model - Everything is an object, including nil, true, false, number, string, etc.
 - Framework for writing Native functions and classes.
 - Root class Object which serves as superclass of every class.
 - Remove print statement and replace it by print/println native functions.
 
-### KtLox v1.2.0(next version)
+### KtLox v1.2.0(current version)
 - Full Fledged Standard Library: Boolean, Number, String, Array, Dictionary, DateTime, etc.
 - Move all native classes from common package to the std.lang package.
 - Allow customized runtime configurations for KtLox at startup with config.properties
 - Split the Number class, which will distinguish between integers and floating numbers.
 
-### KtLox v1.3.0
+### KtLox v1.3.0(next version)
 - Array/Dictionary Literals and square bracket notation for array/dictionary access.
 - Short closures/lambda expression with nonlocal returns.
 - Replace C style for loop by Kotlin style for-in loop for collection.

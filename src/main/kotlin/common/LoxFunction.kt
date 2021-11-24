@@ -20,7 +20,7 @@ class LoxFunction(val name: String?,
         return LoxFunction(name, declaration, environment, isInitializer)
     }
 
-    override fun call(interpreter: Interpreter, arguments: List<Any?>?): Any? {
+    override fun call(interpreter: Interpreter, arguments: List<Any?>?): Any?{
         val environment = Environment(closure)
         declaration.params?.forEachIndexed { index, token -> environment.define(token.lexeme, arguments!![index]) }
         try{

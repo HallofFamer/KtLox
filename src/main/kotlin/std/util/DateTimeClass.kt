@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-object DateTimeClass : LoxNativeClass("DateTime", ObjectClass, null, DateTimeMetaclass) {
+object DateTimeClass : LoxNativeClass("DateTime", ObjectClass, null, DateTimeMetaclass){
 
     init{
         defineNativeGetter("timestamp", this::timestampProp)
@@ -64,51 +64,53 @@ object DateTimeClass : LoxNativeClass("DateTime", ObjectClass, null, DateTimeMet
 
     override fun new(klass: LoxClass) = LoxDateTime(klass)
 
+    override fun thisInstance(interpreter: Interpreter) = interpreter.thisInstance as LoxDateTime
+
     private fun addDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val text = textFromDuration(arguments!![0] as LoxObject)
         return DateTimeMetaclass.createFromLocalDateTime(self.jDateTime.plus(Duration.parse(text)))
     }
 
     private fun addDaysDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val days = arguments!![0] as? Long ?: throw ArgumentError("the argument for days to be added must be an integer.")
         return DateTimeMetaclass.createFromLocalDateTime(self.jDateTime.plusDays(days))
     }
 
     private fun addHoursDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val hours = arguments!![0] as? Long ?: throw ArgumentError("the argument for hours to be added must be an integer.")
         return DateTimeMetaclass.createFromLocalDateTime(self.jDateTime.plusHours(hours))
     }
 
     private fun addMinutesDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val minutes = arguments!![0] as? Long ?: throw ArgumentError("the argument for minutes to be added must be an integer.")
         return DateTimeMetaclass.createFromLocalDateTime(self.jDateTime.plusMinutes(minutes))
     }
 
     private fun addSecondsDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val seconds = arguments!![0] as? Long ?: throw ArgumentError("the argument for seconds to be added must be an integer.")
         return DateTimeMetaclass.createFromLocalDateTime(self.jDateTime.plusSeconds(seconds))
     }
 
     private fun diffDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxObject{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val other = arguments!![0] as? LoxDateTime ?: throw ArgumentError("The argument must be an instance of DateTime")
         return DurationMetaclass.createFromTimeDiff(self, other)
     }
 
     private fun diffTimeDef(interpreter: Interpreter, arguments: List<Any?>?) : Long{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val other = arguments!![0] as? LoxDateTime ?: throw ArgumentError("The argument must be an instance of DateTime")
         return self.jDateTime.until(other.jDateTime, ChronoUnit.SECONDS)
     }
 
     private fun formatDef(interpreter: Interpreter, arguments: List<Any?>?) : String{
         try {
-            val self = interpreter.thisInstance as LoxDateTime
+            val self = thisInstance(interpreter)
             val format = arguments!![0] as? String ?: throw ArgumentError("format argument must be a string!")
             return self.jDateTime.format(DateTimeFormatter.ofPattern(format))
         }
@@ -118,31 +120,31 @@ object DateTimeClass : LoxNativeClass("DateTime", ObjectClass, null, DateTimeMet
     }
 
     private fun subtractDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val text = textFromDuration(arguments!![0] as LoxObject)
         return DateTimeMetaclass.createFromLocalDateTime(self.jDateTime.minus(Duration.parse(text)))
     }
 
     private fun subtractDaysDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val days = arguments!![0] as? Long ?: throw ArgumentError("the argument for days to be subtracted must be an integer.")
         return DateTimeMetaclass.createFromLocalDateTime(self.jDateTime.minusDays(days))
     }
 
     private fun subtractHoursDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val hours = arguments!![0] as? Long ?: throw ArgumentError("the argument for hours to be subtracted must be an integer.")
         return DateTimeMetaclass.createFromLocalDateTime(self.jDateTime.minusHours(hours))
     }
 
     private fun subtractMinutesDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val minutes = arguments!![0] as? Long ?: throw ArgumentError("the argument for minutes to be subtracted must be an integer.")
         return DateTimeMetaclass.createFromLocalDateTime(self.jDateTime.minusMinutes(minutes))
     }
 
     private fun subtractSecondsDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val seconds = arguments!![0] as? Long ?: throw ArgumentError("the argument for seconds to be subtracted must be an integer.")
         return DateTimeMetaclass.createFromLocalDateTime(self.jDateTime.minusSeconds(seconds))
     }
@@ -165,17 +167,17 @@ object DateTimeClass : LoxNativeClass("DateTime", ObjectClass, null, DateTimeMet
     }
 
     private fun timestampProp(interpreter: Interpreter, arguments: List<Any?>?) : Long{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val timestamp = Timestamp.valueOf(self.jDateTime)
         return timestamp.time
     }
 
     private fun toDateDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDate{
-        val self = interpreter.thisInstance as LoxDateTime
+        val self = thisInstance(interpreter)
         val date = LoxDate()
         date.jDate = self.jDateTime.toLocalDate()
         return date
     }
 
-    private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) = (interpreter.thisInstance as LoxDateTime).toString()
+    private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) = thisInstance(interpreter).toString()
 }

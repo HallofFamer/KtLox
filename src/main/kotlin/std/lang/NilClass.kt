@@ -1,6 +1,6 @@
 package com.mysidia.ktlox.std.lang
 
-import com.mysidia.ktlox.common.LoxNativeClass
+import com.mysidia.ktlox.common.*
 import com.mysidia.ktlox.interpreter.Interpreter
 import com.mysidia.ktlox.interpreter.RuntimeError
 

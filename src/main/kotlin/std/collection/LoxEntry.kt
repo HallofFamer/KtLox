@@ -2,7 +2,7 @@ package com.mysidia.ktlox.std.collection
 
 import com.mysidia.ktlox.common.*
 
-class LoxEntry(klass: LoxClass = EntryClass) : LoxObject(klass) {
+class LoxEntry(klass: LoxClass = EntryClass) : LoxObject(klass){
 
     lateinit var key : Any
     var value : Any? = null

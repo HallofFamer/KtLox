@@ -64,20 +64,20 @@ object Lox{
         hadError = true
     }
 
-    fun runtimeError(error: RuntimeError) {
+    fun runtimeError(error: RuntimeError){
         System.err.println("${error.message}\n[line ${error.token.line}]")
         hadRuntimeError = true
     }
 
     @JvmStatic
-    fun main(args: Array<String>) {
+    fun main(args: Array<String>){
         val argv = configs.getProperty("argv").split(",").toTypedArray()
         val arguments = if(argv[0].isEmpty()) args else argv
         when(arguments.size){
             0 -> runPrompt()
             1 -> runFile(arguments[0])
             else -> {
-                println("Usage: ktlox [script]")
+                println("Usage: KtLox [script]")
                 exitProcess(64)
             }
         }

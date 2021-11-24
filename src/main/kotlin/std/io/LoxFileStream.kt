@@ -1,9 +1,7 @@
 package com.mysidia.ktlox.std.io
 
 import com.mysidia.ktlox.common.*
-import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.Closeable
+import java.io.*
 
 class LoxFileStream(klass: LoxClass = FileStreamClass) : LoxObject(klass), Closeable{
 

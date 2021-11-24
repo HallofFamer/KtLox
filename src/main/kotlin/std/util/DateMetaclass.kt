@@ -5,7 +5,7 @@ import com.mysidia.ktlox.interpreter.Interpreter
 import com.mysidia.ktlox.std.lang.ClassClass
 import java.time.LocalDate
 
-object DateMetaclass : LoxNativeClass("Date class", ClassClass, null, ClassClass) {
+object DateMetaclass : LoxNativeClass("Date class", ClassClass, null, ClassClass){
 
     private val now : LoxDate by lazy {
         val jDate = LocalDate.now()

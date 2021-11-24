@@ -28,7 +28,7 @@ object FileClass : LoxNativeClass("File", ObjectClass, null, FileMetaclass){
 
     override val isNative = true
 
-    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?): LoxFile {
+    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?): LoxFile{
         val thisInstance = interpreter.thisInstance as? LoxFile ?: LoxFile()
         val fileName = arguments!![0] as? String ?: ""
         thisInstance.jFile = File(fileName)

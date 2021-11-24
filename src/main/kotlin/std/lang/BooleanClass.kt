@@ -13,7 +13,7 @@ object BooleanClass : LoxNativeClass("Boolean", ObjectClass){
     }
 
     override fun initDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxObject{
-        throw ArgumentError("Cannot create instance from class Boolean.")
+        throw ArgumentError("Cannot create instance from abstract class Boolean.")
     }
 
     private fun isBooleanDef(interpreter: Interpreter, arguments: List<Any?>?) = true

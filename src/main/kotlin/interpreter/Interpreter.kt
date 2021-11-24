@@ -9,12 +9,12 @@ import com.mysidia.ktlox.std.lang.*
 import java.io.FileInputStream
 import java.util.*
 
-class Interpreter(private val configs: Properties) : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
+class Interpreter(private val configs: Properties) : Expr.Visitor<Any?>, Stmt.Visitor<Unit>{
 
     private val globals = Environment()
     private val locals = mutableMapOf<Expr, Int>()
-
     var environment = globals
+
     val thisInstance: LoxObject get() = environment.getAt(0, "this") as? LoxObject ?: LoxNil
     val tokenFalse = Token(FALSE, "false", false, 0)
     val tokenNil = Token(NIL, "nil", null, 0)
@@ -22,13 +22,7 @@ class Interpreter(private val configs: Properties) : Expr.Visitor<Any?>, Stmt.Vi
 
     init{
         configs.load(FileInputStream("./config.properties"))
-        val stdPackage = configs.getProperty("std.package")
-        val modules = configs.getProperty("std.modules")
-        modules.split(",").forEach {
-            val moduleName = "$stdPackage.$it.${it.capitalize()}Module"
-            val module = Class.forName(moduleName).kotlin.objectInstance as LoxModule
-            module.registerModule(globals)
-        }
+        resolveModules()
     }
 
     fun executeBlock(statements: List<Stmt>, environment: Environment) {
@@ -328,6 +322,16 @@ class Interpreter(private val configs: Properties) : Expr.Visitor<Any?>, Stmt.Vi
     private fun lookUpVariable(name: Token, expr: Expr): Any? {
         val distance = locals[expr]
         return if(distance != null){ environment.getAt(distance, name.lexeme) } else globals.get(name)
+    }
+
+    private fun resolveModules(){
+        val stdPackage = configs.getProperty("std.package")
+        val modules = configs.getProperty("std.modules")
+        modules.split(",").forEach {
+            val moduleName = "$stdPackage.$it.${it.capitalize()}Module"
+            val module = Class.forName(moduleName).kotlin.objectInstance as LoxModule
+            module.registerModule(globals)
+        }
     }
 
     private fun stringify(obj: Any?): String {

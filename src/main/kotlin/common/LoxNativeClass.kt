@@ -1,7 +1,7 @@
 package com.mysidia.ktlox.common
 
 import com.mysidia.ktlox.interpreter.Interpreter
-import com.mysidia.ktlox.std.lang.ClassClass
+import com.mysidia.ktlox.std.lang.*
 
 abstract class LoxNativeClass(name: String,
                               superclass: LoxClass?,

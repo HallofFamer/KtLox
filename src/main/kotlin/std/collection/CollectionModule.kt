@@ -5,7 +5,7 @@ import com.mysidia.ktlox.interpreter.Environment
 
 object CollectionModule : LoxModule{
 
-    override fun registerModule(env: Environment) {
+    override fun registerModule(env: Environment){
         env.define("Collection", CollectionClass)
         env.define("List", ListClass)
         env.define("Set", SetClass)

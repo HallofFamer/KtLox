@@ -15,9 +15,9 @@ object FloatClass : LoxNativeClass("Float", NumberClass){
 
     override val arity = 1
 
-    private fun absDef(interpreter: Interpreter, arguments: List<Any?>?) = abs(LoxFloat.value)
-
     override fun initDef(interpreter: Interpreter, arguments: List<Any?>?) = arguments!![0] as? Double ?: 0.0
+
+    private fun absDef(interpreter: Interpreter, arguments: List<Any?>?) = abs(LoxFloat.value)
 
     private fun isFloatDef(interpreter: Interpreter, arguments: List<Any?>?) = true
 }

@@ -67,3 +67,7 @@ println(d.toString());
 var e = b / a;
 println("value of e(b/a) is: ");
 println(e.toString());
+
+var f = b.toInt() / a;
+println("value of f(b/a) is: ");
+println(f.toString());

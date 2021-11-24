@@ -25,7 +25,7 @@ object FileMetaclass : LoxNativeClass("File class", ClassClass, null, ClassClass
     private fun openDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxFileStream{
         val fileName = arguments!![0] as String
         val file = File(fileName)
-        if(!file.isFile) throw ArgumentError("The supplied file name is invalid")
+        if(!file.isFile) throw ArgumentError("The supplied file name is invalid.")
         val readOnly = arguments[1] as Boolean
         return if(readOnly) LoxFileStream(file.bufferedReader())
                else LoxFileStream(file.bufferedReader(), file.bufferedWriter())
@@ -34,7 +34,7 @@ object FileMetaclass : LoxNativeClass("File class", ClassClass, null, ClassClass
     private fun openBinaryDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxBinaryStream{
         val fileName = arguments!![0] as String
         val file = File(fileName)
-        if(!file.isFile) throw ArgumentError("The supplied file name is invalid")
+        if(!file.isFile) throw ArgumentError("The supplied file name is invalid.")
         val readOnly = arguments[1] as Boolean
         return if(readOnly) LoxBinaryStream(BufferedInputStream(FileInputStream(file)))
                else LoxBinaryStream(BufferedInputStream(FileInputStream(file)), BufferedOutputStream(FileOutputStream(file)))

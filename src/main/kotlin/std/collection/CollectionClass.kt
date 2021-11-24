@@ -94,7 +94,7 @@ object CollectionClass : LoxNativeClass("Collection", ObjectClass){
         return collection
     }
 
-    private fun selectDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxCollection<*> {
+    private fun selectDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxCollection<*>{
         val self = interpreter.thisInstance as LoxCollection<*>
         val closure = arguments!![0] as? LoxFunction ?: throw ArgumentError("the closure(first argument) must be a function or closure.")
         val collection = self.emptyCollection()
@@ -109,12 +109,12 @@ object CollectionClass : LoxNativeClass("Collection", ObjectClass){
         return ArrayMetaclass.createFromCollection(self.elements)
     }
 
-    private fun toListDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxList {
+    private fun toListDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxList{
         val self = interpreter.thisInstance as LoxCollection<*>
         return LoxList(self.elements.toMutableList())
     }
 
-    private fun toSetDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxSet {
+    private fun toSetDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxSet{
         val self = interpreter.thisInstance as LoxCollection<*>
         return LoxSet(self.elements.toMutableSet())
     }

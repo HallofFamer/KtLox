@@ -24,6 +24,6 @@ object DurationClass : LoxNativeClass("Duration", ObjectClass, null, DurationMet
 
     private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) : String{
         val self = interpreter.thisInstance
-        return "${self.getProperty("days")} days, ${self.getProperty("hours")} hours, ${self.getProperty("minutes")} mins, ${self.getProperty("seconds")} secs"
+        return "${self.getProperty("days")} days, ${self.getProperty("hours")} hours, ${self.getProperty("minutes")} mins, ${self.getProperty("seconds")} secs."
     }
 }

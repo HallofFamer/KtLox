@@ -2,7 +2,7 @@ package com.mysidia.ktlox.common
 
 import com.mysidia.ktlox.interpreter.Interpreter
 
-interface LoxCallable {
+interface LoxCallable{
     val arity : Int
     val isGetter : Boolean
 

@@ -19,7 +19,7 @@ println(" ");
 var fileWriter = FileStream("./src/test/others/output.txt", false);
 println(fileWriter.toString());
 println(fileWriter.readonly);
-fileWriter.putString("Writing a string to outout file.");
+fileWriter.putString("Writing a string to output file.");
 fileWriter.appendLine();
 fileWriter.appendString("Appending another string to the end of file.");
 println("closing file write stream...");

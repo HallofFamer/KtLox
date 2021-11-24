@@ -2,7 +2,7 @@ package com.mysidia.ktlox.common
 
 import com.mysidia.ktlox.std.lang.IntClass
 
-object LoxInt : LoxObject(IntClass), LoxNumeric<Long> {
+object LoxInt : LoxObject(IntClass), LoxNumeric<Long>{
 
     override var value : Long = 0L
 

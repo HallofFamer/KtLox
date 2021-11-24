@@ -48,34 +48,36 @@ object DateClass : LoxNativeClass("Date", ObjectClass, null, DateMetaclass){
 
     override fun new(klass: LoxClass) = LoxDate(klass)
 
+    override fun thisInstance(interpreter: Interpreter) = interpreter.thisInstance as LoxDate
+
     private fun addDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDate{
-        val self = interpreter.thisInstance as LoxDate
+        val self = thisInstance(interpreter)
         val duration = arguments!![0] as LoxObject
         val days = duration.getProperty("days") as Long
         return DateMetaclass.createFromLocalDate(self.jDate.plus(Period.ofDays(days.toInt())))
     }
 
     private fun addDaysDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDate{
-        val self = interpreter.thisInstance as LoxDate
+        val self = thisInstance(interpreter)
         val days = arguments!![0] as? Long ?: throw ArgumentError("the argument for days to be added must be an integer.")
         return DateMetaclass.createFromLocalDate(self.jDate.plusDays(days))
     }
 
     private fun diffDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxObject{
-        val self = interpreter.thisInstance as LoxDate
+        val self = thisInstance(interpreter)
         val other = arguments!![0] as? LoxDate ?: throw ArgumentError("The argument must be an instance of Date.")
         return DurationMetaclass.createFromDateDiff(self, other)
     }
 
     private fun diffDateDef(interpreter: Interpreter, arguments: List<Any?>?) : Long{
-        val self = interpreter.thisInstance as LoxDate
+        val self = thisInstance(interpreter)
         val other = arguments!![0] as? LoxDate ?: throw ArgumentError("The argument must be an instance of Date.")
         return self.jDate.until(other.jDate, ChronoUnit.DAYS)
     }
 
     private fun formatDef(interpreter: Interpreter, arguments: List<Any?>?) : String{
         try {
-            val self = interpreter.thisInstance as LoxDate
+            val self = thisInstance(interpreter)
             val format = arguments!![0] as? String ?: throw ArgumentError("format argument must be a string!")
             return self.jDate.format(DateTimeFormatter.ofPattern(format))
         }
@@ -85,26 +87,26 @@ object DateClass : LoxNativeClass("Date", ObjectClass, null, DateMetaclass){
     }
 
     private fun subtractDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDate{
-        val self = interpreter.thisInstance as LoxDate
+        val self = thisInstance(interpreter)
         val duration = arguments!![0] as LoxObject
         val days = duration.getProperty("days") as Long
         return DateMetaclass.createFromLocalDate(self.jDate.minus(Period.ofDays(days.toInt())))
     }
 
     private fun subtractDaysDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDate{
-        val self = interpreter.thisInstance as LoxDate
+        val self = thisInstance(interpreter)
         val days = arguments!![0] as? Long ?: throw ArgumentError("the argument for days to be subtracted must be an integer.")
         return DateMetaclass.createFromLocalDate(self.jDate.minusDays(days))
     }
 
-    private fun timestampProp(interpreter: Interpreter, arguments: List<Any?>?) = (interpreter.thisInstance as LoxDate).jDate.toEpochDay() * 86400000
+    private fun timestampProp(interpreter: Interpreter, arguments: List<Any?>?) = thisInstance(interpreter).jDate.toEpochDay() * 86400000
 
     private fun toDateTimeDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
-        val self = interpreter.thisInstance as LoxDate
+        val self = thisInstance(interpreter)
         val datetime = LoxDateTime()
         datetime.jDateTime = self.jDate.atStartOfDay()
         return datetime
     }
 
-    private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) = (interpreter.thisInstance as LoxDate).toString()
+    private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) = thisInstance(interpreter).toString()
 }

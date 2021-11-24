@@ -2,7 +2,7 @@ package com.mysidia.ktlox.std.collection
 
 import com.mysidia.ktlox.common.*
 
-class LoxSet(klass: LoxClass = SetClass) : LoxObject(klass), LoxCollection<MutableSet<Any?>> {
+class LoxSet(klass: LoxClass = SetClass) : LoxObject(klass), LoxCollection<MutableSet<Any?>>{
 
     override lateinit var elements: MutableSet<Any?>
 
@@ -12,7 +12,7 @@ class LoxSet(klass: LoxClass = SetClass) : LoxObject(klass), LoxCollection<Mutab
 
     override fun emptyCollection() = LoxSet(mutableSetOf(), klass!!)
 
-    override fun toString(): String {
+    override fun toString(): String{
         val text = StringBuilder()
         text.append("Set[")
         elements.forEachIndexed { index, element ->

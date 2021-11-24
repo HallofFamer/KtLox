@@ -12,6 +12,7 @@ println(c);
 println(c.length);
 println(b.remove(" feeling"));
 println(b.contains("How"));
+println(a.indexOf(2.5));
 
 var d = Array(2);
 d.set(0, "How");

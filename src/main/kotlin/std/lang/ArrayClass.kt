@@ -5,7 +5,7 @@ import com.mysidia.ktlox.interpreter.ArgumentError
 import com.mysidia.ktlox.interpreter.Interpreter
 import com.mysidia.ktlox.std.collection.LoxList
 
-object ArrayClass : LoxNativeClass("Array", ObjectClass, null, ArrayMetaclass) {
+object ArrayClass : LoxNativeClass("Array", ObjectClass, null, ArrayMetaclass){
 
     init{
         defineNativeGetter("length", this::lengthProp)

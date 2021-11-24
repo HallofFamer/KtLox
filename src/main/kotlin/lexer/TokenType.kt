@@ -1,6 +1,6 @@
 package com.mysidia.ktlox.lexer
 
-enum class TokenType {
+enum class TokenType{
     // Single-character tokens.
     LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
     COMMA, COLON, DOT, MINUS, MODULUS, PLUS, QUESTION,

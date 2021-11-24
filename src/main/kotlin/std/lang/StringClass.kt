@@ -6,7 +6,7 @@ import com.mysidia.ktlox.interpreter.Interpreter
 import com.sun.org.apache.xpath.internal.Arg
 import java.util.*
 
-object StringClass : LoxNativeClass("String", ObjectClass) {
+object StringClass : LoxNativeClass("String", ObjectClass){
 
     init{
         defineNativeMetaclass("String class")

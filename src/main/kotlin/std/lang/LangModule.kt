@@ -5,7 +5,7 @@ import com.mysidia.ktlox.interpreter.Environment
 
 object LangModule : LoxModule{
 
-    override fun registerModule(env: Environment) {
+    override fun registerModule(env: Environment){
         env.define("Object", ObjectClass)
         env.define("Nil", NilClass)
         env.define("Boolean", BooleanClass)

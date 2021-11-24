@@ -15,7 +15,7 @@ object EntryClass : LoxNativeClass("Entry", ObjectClass){
 
     override val isNative = true
 
-    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?): LoxEntry {
+    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?): LoxEntry{
         val thisInstance = interpreter.thisInstance as? LoxEntry ?: LoxEntry()
         val key = arguments!![0] ?: throw ArgumentError("The key for entry(first argument) cannot be nil.")
         val value = arguments[1]

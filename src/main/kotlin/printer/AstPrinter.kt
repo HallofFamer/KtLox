@@ -2,7 +2,7 @@ package com.mysidia.ktlox.printer
 
 import com.mysidia.ktlox.ast.Expr
 
-class AstPrinter : ExprPrinter {
+class AstPrinter : ExprPrinter{
 
     override fun visitAssignExpr(expr: Expr.Assign) = "(${expr.name} = ${expr.value})"
 

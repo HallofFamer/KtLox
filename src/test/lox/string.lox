@@ -31,7 +31,7 @@ println(b.isEmpty());
 println(String.instanceOf(Class));
 println("");
 
-println("String methods on a - 'hello world'");
+println("String methods on a : 'hello world'");
 println("a capitalize");
 println(a.capitalize());
 println("a contains: 'hello'");

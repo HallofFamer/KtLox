@@ -46,7 +46,7 @@ object NumberClass : LoxNativeClass("Number", ObjectClass){
         return hypot(self.toDouble(), other.toDouble())
     }
 
-    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?) : Any{
+    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxObject{
         throw ArgumentError("Cannot create instance from abstract class Number.")
     }
 

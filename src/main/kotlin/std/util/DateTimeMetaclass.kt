@@ -34,7 +34,7 @@ object DateTimeMetaclass : LoxNativeClass("DateTime class", ClassClass, null, Cl
 
     private fun nowProp(interpreter: Interpreter, arguments: List<Any?>?) = now
 
-    private fun parseDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime {
+    private fun parseDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxDateTime{
         val jDateTime = LocalDateTime.parse(arguments!![0] as String)
         return createFromLocalDateTime(jDateTime)
     }

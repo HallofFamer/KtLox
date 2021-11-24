@@ -9,7 +9,7 @@ class RpnPrinter : ExprPrinter{
 
     override fun visitBinaryExpr(expr: Expr.Binary) = "${expr.left.accept(this)} ${expr.right.accept(this)} ${expr.operator.lexeme}"
 
-    override fun visitCallExpr(expr: Expr.Call) : String {
+    override fun visitCallExpr(expr: Expr.Call) : String{
         return if(expr.arguments == null) "property getter ${expr.callee}"
         else "call ${expr.callee}(${expr.arguments.joinToString(", ")})"
     }

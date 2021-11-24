@@ -5,7 +5,7 @@ import com.mysidia.ktlox.interpreter.ArgumentError
 import com.mysidia.ktlox.interpreter.Interpreter
 import kotlin.math.*
 
-object IntClass : LoxNativeClass("Int", NumberClass) {
+object IntClass : LoxNativeClass("Int", NumberClass){
 
     init{
         defineNativeMetaclass("Int class")
@@ -23,6 +23,8 @@ object IntClass : LoxNativeClass("Int", NumberClass) {
     }
 
     override val arity = 1
+
+    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?) = arguments!![0] as? Long ?: 0L
 
     private fun absDef(interpreter: Interpreter, arguments: List<Any?>?) = abs(LoxInt.value)
 
@@ -48,8 +50,6 @@ object IntClass : LoxNativeClass("Int", NumberClass) {
         val other = arguments!![0] as? Long ?: throw ArgumentError("the first argument for gcd must be an integer.")
         return LoxInt.gcd(other)
     }
-
-    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?) = arguments!![0] as? Long ?: 0L
 
     private fun isIntDef(interpreter: Interpreter, arguments: List<Any?>?) = true
 

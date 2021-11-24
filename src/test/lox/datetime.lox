@@ -20,7 +20,7 @@ println("1 week earlier is: ");
 println(Date.now.subtractDays(7));
 println("Parse date from string: '2021-10-15'");
 println(Date.parse("2021-10-15").toString());
-println("Date difference between the date and now is(days): ");
+println("Date difference between the date and now is(in days): ");
 println(date.diffDate(Date.now));
 println(date.diff(Date.now).toString());
 println("");

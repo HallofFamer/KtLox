@@ -8,7 +8,7 @@ import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.File
 
-object BinaryStreamClass : LoxNativeClass("BinaryStream", ObjectClass) {
+object BinaryStreamClass : LoxNativeClass("BinaryStream", ObjectClass){
 
     init{
         defineNativeMetaclass("BinaryStream class")

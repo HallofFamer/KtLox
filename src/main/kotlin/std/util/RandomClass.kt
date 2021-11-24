@@ -26,7 +26,7 @@ object RandomClass : LoxNativeClass("Random", ObjectClass){
     private fun nextDef(interpreter: Interpreter, arguments: List<Any?>?) = Random.nextLong()
 
     private fun nextIntDef(interpreter: Interpreter, arguments: List<Any?>?) : Long{
-        val bound = arguments!![0] as? Long ?: throw ArgumentError("The first argument(bound) must be an integer.")
+        val bound = arguments!![0] as? Long ?: throw ArgumentError("The first argument(upper bound) must be an integer.")
         return Random.nextInt(bound.toInt()).toLong()
     }
 }

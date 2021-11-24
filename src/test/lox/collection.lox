@@ -37,7 +37,6 @@ var num2 = list.detect(fun(element){
     return element.instanceOf(Number);
 });
 println(num2);
-
 list.clear();
 println(list.toString());
 println(list.isEmpty());
@@ -56,3 +55,5 @@ map.put("EU", "Europe");
 map.put("RU", "Russia");
 println(map.toString());
 println(map.containsKey("US"));
+map.clear();
+println(map.isEmpty());

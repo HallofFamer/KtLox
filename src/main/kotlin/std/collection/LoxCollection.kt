@@ -1,6 +1,6 @@
 package com.mysidia.ktlox.std.collection
 
-interface LoxCollection<T: MutableCollection<Any?>> {
+interface LoxCollection<T: MutableCollection<Any?>>{
 
     val length : Int
         get() = elements.size

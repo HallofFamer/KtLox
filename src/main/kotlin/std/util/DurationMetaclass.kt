@@ -5,7 +5,7 @@ import com.mysidia.ktlox.interpreter.Interpreter
 import com.mysidia.ktlox.std.lang.ClassClass
 import java.time.temporal.ChronoUnit
 
-object DurationMetaclass : LoxNativeClass("Duration class", ClassClass, null, ClassClass) {
+object DurationMetaclass : LoxNativeClass("Duration class", ClassClass, null, ClassClass){
 
     init{
         defineNativeMethod("ofDays", 1, this::ofDaysDef)

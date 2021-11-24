@@ -2,7 +2,7 @@ package com.mysidia.ktlox.std.collection
 
 import com.mysidia.ktlox.common.*
 
-class LoxList(klass: LoxClass = ListClass) : LoxObject(klass), LoxCollection<MutableList<Any?>> {
+class LoxList(klass: LoxClass = ListClass) : LoxObject(klass), LoxCollection<MutableList<Any?>>{
 
     override lateinit var elements : MutableList<Any?>
 

@@ -1,9 +1,7 @@
 package com.mysidia.ktlox.std.io
 
 import com.mysidia.ktlox.common.*
-import java.io.BufferedInputStream
-import java.io.BufferedOutputStream
-import java.io.Closeable
+import java.io.*
 
 class LoxBinaryStream(klass: LoxClass = BinaryStreamClass) : LoxObject(klass), Closeable{
 

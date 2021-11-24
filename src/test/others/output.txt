@@ -1,2 +1,2 @@
-Writing a string to outout file.
+Writing a string to output file.
 Appending another string to the end of file.

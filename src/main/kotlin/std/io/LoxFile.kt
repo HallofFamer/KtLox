@@ -1,7 +1,7 @@
 package com.mysidia.ktlox.std.io
 
 import com.mysidia.ktlox.common.*
-import java.io.File
+import java.io.*
 
 class LoxFile(klass: LoxClass = FileClass) : LoxObject(klass){
 

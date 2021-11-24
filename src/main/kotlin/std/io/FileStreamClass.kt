@@ -32,7 +32,7 @@ object FileStreamClass : LoxNativeClass("FileStream", ObjectClass){
 
     override val isNative = true
 
-    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?): LoxFileStream {
+    override fun initDef(interpreter: Interpreter, arguments: List<Any?>?): LoxFileStream{
         val thisInstance = interpreter.thisInstance as? LoxFileStream ?: LoxFileStream()
         val file = arguments!![0] as? LoxFile ?: LoxFile(File(arguments[0].toString()))
         val readOnly = arguments[1] as Boolean

@@ -81,7 +81,7 @@ object ObjectClass : LoxNativeClass("Object", null){
             is String -> self.klass?.findMethod(method) != null
             is LoxFunction -> method.name?.let { self.klass?.findMethod(it) } != null
             is LoxNativeMethod -> self.klass?.findMethod(method.name) != null
-            else -> throw ArgumentError("supplied argument must be a string or a function/method object")
+            else -> throw ArgumentError("supplied argument must be a string or a function/method object.")
         }
     }
 

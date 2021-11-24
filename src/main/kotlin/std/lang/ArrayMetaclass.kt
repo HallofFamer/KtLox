@@ -4,7 +4,7 @@ import com.mysidia.ktlox.common.*
 import com.mysidia.ktlox.interpreter.ArgumentError
 import com.mysidia.ktlox.interpreter.Interpreter
 
-object ArrayMetaclass : LoxNativeClass("Array class", ClassClass, null, ClassClass) {
+object ArrayMetaclass : LoxNativeClass("Array class", ClassClass, null, ClassClass){
 
     init{
         defineNativeMethod("fromArray", 1, this::fromArrayDef)

@@ -52,14 +52,16 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
 
     override fun new(klass: LoxClass) = LoxMap(klass)
 
+    override fun thisInstance(interpreter: Interpreter) = interpreter.thisInstance as LoxMap
+
     private fun addDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val entry = arguments!![0] as? LoxEntry ?: throw ArgumentError("the element(first argument) must be an instance of Entry.")
         self.elements[entry.key] = entry.value
     }
 
     private fun addAllDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val entries = arguments!![0] as? LoxCollection<*> ?: throw ArgumentError("the collection(first argument) must be an instance of Collection.")
         for(element in entries.elements){
             if(element !is LoxEntry) throw ArgumentError("The elements in the collection must be an instance of Entry")
@@ -67,10 +69,10 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
         }
     }
 
-    private fun clearDef(interpreter: Interpreter, arguments: List<Any?>?) = (interpreter.thisInstance as LoxMap).elements.clear()
+    private fun clearDef(interpreter: Interpreter, arguments: List<Any?>?) = thisInstance(interpreter).elements.clear()
 
     private fun collectDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxMap {
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val closure = arguments!![0] as? LoxFunction ?: throw ArgumentError("the closure(first argument) must be a function or closure.")
         val map = self.emptyCollection()
         for((key, value) in self.elements){
@@ -80,13 +82,13 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
     }
 
     private fun containsDef(interpreter: Interpreter, arguments: List<Any?>?) : Boolean{
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val entry = arguments!![0] as LoxEntry
         return (self.elements.contains(entry.key) && self.elements[entry.key] == entry.value)
     }
 
     private fun containsAllDef(interpreter: Interpreter, arguments: List<Any?>?) : Boolean{
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val collection = arguments!![0] as? LoxMap ?: throw ArgumentError("the collection(first argument) must be an instance of Map.")
         for((key, _) in collection.elements){
             if(!self.elements.containsKey(key)) return false
@@ -95,19 +97,19 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
     }
 
     private fun containsKeyDef(interpreter: Interpreter, arguments: List<Any?>?) : Boolean{
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val key = arguments!![0] ?: throw ArgumentError("the key(first argument) cannot be nil")
         return self.elements.containsKey(key)
     }
 
     private fun containsValueDef(interpreter: Interpreter, arguments: List<Any?>?) : Boolean{
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val value = arguments!![0]
         return self.elements.containsValue(value)
     }
 
     private fun detectDef(interpreter: Interpreter, arguments: List<Any?>?) : Any?{
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val closure = arguments!![0] as? LoxFunction ?: throw ArgumentError("the closure(first argument) must be a function or closure.")
         for((key, value) in self.elements){
             if(closure.call(interpreter, listOf(key, value)) == true) return value
@@ -116,7 +118,7 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
     }
 
     private fun eachDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val block = arguments!![0] as? LoxFunction ?: throw ArgumentError("the block(first argument) must be a function or closure.")
         for((key, value) in self.elements){
             block.call(interpreter, listOf(key, value))
@@ -124,7 +126,7 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
     }
 
     private fun eachKeyDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val block = arguments!![0] as? LoxFunction ?: throw ArgumentError("the block(first argument) must be a function or closure.")
         for((key, _) in self.elements){
             block.call(interpreter, listOf(key))
@@ -132,37 +134,34 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
     }
 
     private fun eachValueDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val block = arguments!![0] as? LoxFunction ?: throw ArgumentError("the block(first argument) must be a function or closure.")
         for((_, value) in self.elements){
             block.call(interpreter, listOf(value))
         }
     }
 
-    private fun isEmptyDef(interpreter: Interpreter, arguments: List<Any?>?) = (interpreter.thisInstance as LoxMap).elements.isEmpty()
+    private fun isEmptyDef(interpreter: Interpreter, arguments: List<Any?>?) = thisInstance(interpreter).elements.isEmpty()
 
-    private fun lengthProp(interpreter: Interpreter, arguments: List<Any?>?) = (interpreter.thisInstance as LoxMap).length.toLong()
+    private fun lengthProp(interpreter: Interpreter, arguments: List<Any?>?) = thisInstance(interpreter).length.toLong()
 
-    private fun keysDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxSet {
-        val self = interpreter.thisInstance as LoxMap
-        return LoxSet(self.elements.keys as MutableSet<Any?>)
-    }
+    private fun keysDef(interpreter: Interpreter, arguments: List<Any?>?) = LoxSet(thisInstance(interpreter).elements.keys as MutableSet<Any?>)
 
     private fun putDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val key = arguments!![0] ?: throw ArgumentError("the key(first argument) cannot be nil")
         val value = arguments[1]
         self.elements[key] = value
     }
 
     private fun putAllDef(interpreter: Interpreter, arguments: List<Any?>?){
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val collection = arguments!![0] as? LoxMap ?: throw ArgumentError("the collection(first argument) must be an instance of Map.")
         self.elements.putAll(collection.elements)
     }
 
-    private fun rejectDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxMap {
-        val self = interpreter.thisInstance as LoxMap
+    private fun rejectDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxMap{
+        val self = thisInstance(interpreter)
         val closure = arguments!![0] as? LoxFunction ?: throw ArgumentError("the closure(first argument) must be a function or closure.")
         val map = self.emptyCollection()
         for((key, value) in self.elements){
@@ -172,19 +171,19 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
     }
 
     private fun removeDef(interpreter: Interpreter, arguments: List<Any?>?) : Any?{
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val entry = arguments!![0] as? LoxEntry ?: throw ArgumentError("the element(first argument) must be an instance of Entry.")
         return self.elements.remove(entry.key)
     }
 
     private fun removeKeyDef(interpreter: Interpreter, arguments: List<Any?>?) : Any?{
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val key = arguments!![0] ?: throw ArgumentError("the key(first argument) cannot be nil")
         return self.elements.remove(key)
     }
 
-    private fun selectDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxMap {
-        val self = interpreter.thisInstance as LoxMap
+    private fun selectDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxMap{
+        val self = thisInstance(interpreter)
         val closure = arguments!![0] as? LoxFunction ?: throw ArgumentError("the closure(first argument) must be a function or closure.")
         val map = self.emptyCollection()
         for((key, value) in self.elements){
@@ -194,7 +193,7 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
     }
 
     private fun toArrayDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxArray{
-        val self = interpreter.thisInstance as LoxMap
+        val self = thisInstance(interpreter)
         val elements = mutableListOf<Any?>()
         for((key, value) in self.elements){
             elements.add(LoxEntry(key, value))
@@ -202,8 +201,8 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
         return ArrayMetaclass.createFromList(elements)
     }
 
-    private fun toListDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxList {
-        val self = interpreter.thisInstance as LoxMap
+    private fun toListDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxList{
+        val self = thisInstance(interpreter)
         val elements = mutableListOf<Any?>()
         for((key, value) in self.elements){
             elements.add(LoxEntry(key, value))
@@ -211,8 +210,8 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
         return LoxList(elements, ListClass)
     }
 
-    private fun toSetDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxSet {
-        val self = interpreter.thisInstance as LoxMap
+    private fun toSetDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxSet{
+        val self = thisInstance(interpreter)
         val elements = mutableSetOf<Any?>()
         for((key, _) in self.elements){
             elements.add(key)
@@ -220,10 +219,7 @@ object MapClass : LoxNativeClass("Map", CollectionClass){
         return LoxSet(elements)
     }
 
-    private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) = interpreter.thisInstance.toString()
+    private fun toStringDef(interpreter: Interpreter, arguments: List<Any?>?) = thisInstance(interpreter).toString()
 
-    private fun valuesDef(interpreter: Interpreter, arguments: List<Any?>?) : LoxSet {
-        val self = interpreter.thisInstance as LoxMap
-        return LoxSet(self.elements.values as MutableSet<Any?>)
-    }
+    private fun valuesDef(interpreter: Interpreter, arguments: List<Any?>?) = LoxSet(thisInstance(interpreter).elements.values as MutableSet<Any?>)
 }

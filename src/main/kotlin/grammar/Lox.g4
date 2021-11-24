@@ -23,7 +23,7 @@ logicAND: (equality AND equality)*;
 equality: (comparison (BangEQ | EQEQ) comparison)*;
 comparison: (term (LT | LTEQ | GT | GTEQ) term)*;
 term: (factor (PLUS | MINUS) factor)*;
-factor: (unary (STAR | SLASH) unary)*;
+factor: (unary (STAR | SLASH | MODULUS) unary)*;
 unary: ((BANG | MINUS) unary) | call;
 call: primary (LPAREN arguments? RPAREN | DOT IDENTIFIER)*;
 primary: 'nil' | 'true' | 'false' | INT | FLOAT | STRING | IDENTIFIER | (LPAREN expression RPAREN) | (FUN functionBody) | (SUPER DOT IDENTIFIER);
@@ -68,6 +68,7 @@ PLUS: '+';
 MINUS: '-';
 STAR: '*';
 SLASH: '/';
+MODULUS: '%';
 
 INT: DIGIT+;
 FLOAT: INT(DOT INT);
